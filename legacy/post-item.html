@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Post Item — FindIt Lost & Found</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50:  '#f0f7ff', 100: '#e0effe', 200: '#b9ddfe', 300: '#7cc2fd',
+              400: '#36a3f9', 500: '#0c87eb', 600: '#0069c8', 700: '#0154a2',
+              800: '#064886', 900: '#0b3d6f',
+            },
+            lost:  { DEFAULT: '#ef4444', light: '#fef2f2' },
+            found: { DEFAULT: '#10b981', light: '#ecfdf5' },
+          },
+          fontFamily: { sans: ['Inter', 'system-ui', 'sans-serif'] },
+          boxShadow: {
+            card: '0 1px 3px rgba(0,0,0,.06), 0 4px 16px rgba(0,0,0,.04)',
+          },
+        },
+      },
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col">
+
+  <!-- TOP BAR -->
+  <div class="bg-brand-800 text-white text-sm hidden sm:block">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between h-9">
+      <div class="flex items-center gap-5">
+        <a href="#" class="opacity-80 hover:opacity-100 transition">Help Center</a>
+        <a href="#" class="opacity-80 hover:opacity-100 transition">Contact Us</a>
+        <a href="#" class="opacity-80 hover:opacity-100 transition">Safety Tips</a>
+      </div>
+      <div class="flex items-center gap-4">
+        <a href="#" class="opacity-80 hover:opacity-100 transition">Sign In</a>
+        <a href="#" class="opacity-80 hover:opacity-100 transition">Register</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- NAVBAR -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-between py-3 gap-4">
+      <a href="index.html" class="flex items-center gap-2.5 shrink-0">
+        <div class="w-10 h-10 bg-brand-600 rounded-xl flex items-center justify-center shadow-md shadow-brand-600/20">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+        </div>
+        <div class="hidden sm:block">
+          <span class="text-xl font-extrabold text-brand-700 tracking-tight">FindIt</span>
+          <span class="block text-[10px] font-medium text-slate-400 -mt-0.5 tracking-widest uppercase">Lost & Found</span>
+        </div>
+      </a>
+
+      <div class="flex items-center gap-2 text-sm text-slate-500">
+        <a href="index.html" class="hover:text-brand-600 transition">Home</a>
+        <svg class="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        <span class="font-medium text-slate-800">Post Item</span>
+      </div>
+
+      <a href="index.html" class="text-sm font-medium text-slate-600 hover:text-brand-600 transition shrink-0">
+        Cancel
+      </a>
+    </div>
+  </header>
+
+  <!-- PROGRESS STEPS -->
+  <div class="bg-white border-b border-slate-200">
+    <div class="max-w-3xl mx-auto px-4 py-4">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2 step-indicator active" data-step="1">
+          <span class="w-8 h-8 rounded-full bg-brand-600 text-white text-sm font-bold flex items-center justify-center step-circle">1</span>
+          <span class="text-sm font-medium text-brand-700 hidden sm:inline step-label">Type</span>
+        </div>
+        <div class="flex-1 h-0.5 bg-slate-200 mx-2 step-line" data-after="1"></div>
+        <div class="flex items-center gap-2 step-indicator" data-step="2">
+          <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 text-sm font-bold flex items-center justify-center step-circle">2</span>
+          <span class="text-sm font-medium text-slate-400 hidden sm:inline step-label">Details</span>
+        </div>
+        <div class="flex-1 h-0.5 bg-slate-200 mx-2 step-line" data-after="2"></div>
+        <div class="flex items-center gap-2 step-indicator" data-step="3">
+          <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 text-sm font-bold flex items-center justify-center step-circle">3</span>
+          <span class="text-sm font-medium text-slate-400 hidden sm:inline step-label">Location</span>
+        </div>
+        <div class="flex-1 h-0.5 bg-slate-200 mx-2 step-line" data-after="3"></div>
+        <div class="flex items-center gap-2 step-indicator" data-step="4">
+          <span class="w-8 h-8 rounded-full bg-slate-200 text-slate-500 text-sm font-bold flex items-center justify-center step-circle">4</span>
+          <span class="text-sm font-medium text-slate-400 hidden sm:inline step-label">Contact</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main class="flex-1 max-w-7xl mx-auto w-full px-4 py-8">
+    <div class="grid lg:grid-cols-3 gap-8">
+
+      <!-- FORM -->
+      <div class="lg:col-span-2">
+        <form id="postForm" class="space-y-6">
+
+          <!-- STEP 1: Item Type -->
+          <section class="form-step bg-white rounded-2xl border border-slate-200 shadow-card p-6 md:p-8" data-step="1">
+            <h2 class="text-xl font-bold text-slate-800">What would you like to post?</h2>
+            <p class="mt-1 text-sm text-slate-500">Choose whether you lost something or found an item.</p>
+
+            <input type="hidden" name="type" id="itemType" value="lost" />
+
+            <div class="mt-6 grid sm:grid-cols-2 gap-4">
+              <button type="button" id="btnLost" class="type-btn group relative p-6 rounded-2xl border-2 border-lost bg-lost-light text-left transition ring-2 ring-lost ring-offset-2">
+                <div class="w-12 h-12 rounded-xl bg-lost/10 flex items-center justify-center mb-4">
+                  <svg class="w-6 h-6 text-lost" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800">I Lost Something</h3>
+                <p class="mt-1 text-sm text-slate-500">Report a missing item and ask the community for help finding it.</p>
+                <span class="absolute top-4 right-4 w-5 h-5 rounded-full bg-lost flex items-center justify-center type-check">
+                  <svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
+                </span>
+              </button>
+
+              <button type="button" id="btnFound" class="type-btn group relative p-6 rounded-2xl border-2 border-slate-200 bg-white text-left hover:border-found hover:bg-found-light transition">
+                <div class="w-12 h-12 rounded-xl bg-found/10 flex items-center justify-center mb-4">
+                  <svg class="w-6 h-6 text-found" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3 class="font-bold text-lg text-slate-800">I Found Something</h3>
+                <p class="mt-1 text-sm text-slate-500">Share a found item so the owner can identify and claim it.</p>
+                <span class="absolute top-4 right-4 w-5 h-5 rounded-full border-2 border-slate-300 type-check hidden"></span>
+              </button>
+            </div>
+          </section>
+
+          <!-- STEP 2: Item Details -->
+          <section class="form-step bg-white rounded-2xl border border-slate-200 shadow-card p-6 md:p-8 hidden" data-step="2">
+            <h2 class="text-xl font-bold text-slate-800">Item details</h2>
+            <p class="mt-1 text-sm text-slate-500">Describe the item clearly so others can recognize it.</p>
+
+            <div class="mt-6 space-y-5">
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Title <span class="text-lost">*</span></label>
+                <input type="text" name="title" id="fieldTitle" required maxlength="120"
+                  placeholder="e.g. Lost iPhone 15 Pro — Space Black with blue case"
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition" />
+                <p class="mt-1 text-xs text-slate-400"><span id="titleCount">0</span>/120 characters</p>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Category <span class="text-lost">*</span></label>
+                <select name="category" id="fieldCategory" required
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition bg-white cursor-pointer">
+                  <option value="">Select a category</option>
+                  <option>Electronics</option>
+                  <option>Documents</option>
+                  <option>Keys & Wallets</option>
+                  <option>Pets</option>
+                  <option>Clothing</option>
+                  <option>Jewelry</option>
+                  <option>Bags</option>
+                  <option>Vehicles</option>
+                  <option>Other</option>
+                </select>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Description <span class="text-lost">*</span></label>
+                <textarea name="description" id="fieldDescription" required rows="5" maxlength="1000"
+                  placeholder="Include distinctive features: color, brand, marks, contents, where you last saw it…"
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition resize-none"></textarea>
+                <p class="mt-1 text-xs text-slate-400"><span id="descCount">0</span>/1000 characters</p>
+              </div>
+
+              <!-- Photo Upload -->
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Photos</label>
+                <div id="dropZone"
+                  class="relative border-2 border-dashed border-slate-300 rounded-2xl p-8 text-center hover:border-brand-400 hover:bg-brand-50/50 transition cursor-pointer">
+                  <input type="file" id="photoInput" accept="image/*" multiple class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+                  <svg class="w-10 h-10 mx-auto text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                  <p class="mt-3 text-sm font-medium text-slate-600">Drag & drop photos here, or <span class="text-brand-600">browse</span></p>
+                  <p class="mt-1 text-xs text-slate-400">Up to 5 images · JPG, PNG · Max 5 MB each</p>
+                </div>
+                <div id="photoPreview" class="mt-4 grid grid-cols-3 sm:grid-cols-5 gap-3"></div>
+              </div>
+
+              <!-- Reward (lost only) -->
+              <div id="rewardSection" class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                <label class="flex items-center gap-3 cursor-pointer">
+                  <input type="checkbox" id="offerReward" class="w-4 h-4 rounded border-amber-300 text-amber-500 focus:ring-amber-400" />
+                  <span class="text-sm font-semibold text-amber-800">Offer a reward for finding this item</span>
+                </label>
+                <div id="rewardAmountWrap" class="mt-3 hidden">
+                  <div class="flex items-center gap-2">
+                    <span class="text-sm text-amber-700 font-medium">$</span>
+                    <input type="number" name="reward" id="fieldReward" min="1" placeholder="50"
+                      class="w-32 px-3 py-2 rounded-lg border border-amber-200 text-sm outline-none focus:border-amber-400 bg-white" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Urgent (lost only) -->
+              <div id="urgentSection">
+                <label class="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">
+                  <input type="checkbox" name="urgent" id="fieldUrgent" class="w-4 h-4 rounded border-slate-300 text-lost focus:ring-lost" />
+                  <div>
+                    <span class="text-sm font-semibold text-slate-700">Mark as urgent</span>
+                    <p class="text-xs text-slate-400 mt-0.5">For time-sensitive items like pets, medication, or passports</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <!-- STEP 3: Location & Date -->
+          <section class="form-step bg-white rounded-2xl border border-slate-200 shadow-card p-6 md:p-8 hidden" data-step="3">
+            <h2 class="text-xl font-bold text-slate-800">Where & when?</h2>
+            <p class="mt-1 text-sm text-slate-500">Help people narrow down the search area.</p>
+
+            <div class="mt-6 space-y-5">
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">City <span class="text-lost">*</span></label>
+                  <input type="text" name="city" id="fieldCity" required placeholder="Yerevan"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">District / Area <span class="text-lost">*</span></label>
+                  <input type="text" name="area" id="fieldArea" required placeholder="Kentron, Republic Square"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Specific location</label>
+                <input type="text" name="location_detail" placeholder="e.g. Near the fountain, Bus stop #12, Metro Barekamutyun"
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition" />
+              </div>
+
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Date <span class="text-lost">*</span></label>
+                  <input type="date" name="date" id="fieldDate" required
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Approximate time</label>
+                  <input type="time" name="time"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition" />
+                </div>
+              </div>
+
+              <!-- Map placeholder -->
+              <div class="rounded-2xl border border-slate-200 overflow-hidden bg-slate-100 h-48 flex items-center justify-center relative">
+                <div class="absolute inset-0 bg-gradient-to-br from-brand-100 to-brand-200 opacity-60"></div>
+                <div class="relative text-center">
+                  <svg class="w-10 h-10 mx-auto text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                  <p class="mt-2 text-sm font-medium text-brand-700">Pin location on map</p>
+                  <p class="text-xs text-brand-500">Optional — click to drop a pin</p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- STEP 4: Contact -->
+          <section class="form-step bg-white rounded-2xl border border-slate-200 shadow-card p-6 md:p-8 hidden" data-step="4">
+            <h2 class="text-xl font-bold text-slate-800">Contact information</h2>
+            <p class="mt-1 text-sm text-slate-500">How should people reach you? Your info is shown only after they contact you.</p>
+
+            <div class="mt-6 space-y-5">
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Full name <span class="text-lost">*</span></label>
+                  <input type="text" name="name" id="fieldName" required placeholder="John Doe"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition" />
+                </div>
+                <div>
+                  <label class="block text-sm font-semibold text-slate-700 mb-1.5">Phone <span class="text-lost">*</span></label>
+                  <input type="tel" name="phone" id="fieldPhone" required placeholder="+374 00 000 000"
+                    class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-1.5">Email</label>
+                <input type="email" name="email" placeholder="you@email.com"
+                  class="w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition" />
+              </div>
+
+              <div>
+                <label class="block text-sm font-semibold text-slate-700 mb-3">Preferred contact method</label>
+                <div class="flex flex-wrap gap-3">
+                  <label class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 cursor-pointer hover:border-brand-300 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50 transition">
+                    <input type="radio" name="contact_method" value="phone" checked class="text-brand-600 focus:ring-brand-500" />
+                    <span class="text-sm font-medium">Phone call</span>
+                  </label>
+                  <label class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 cursor-pointer hover:border-brand-300 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50 transition">
+                    <input type="radio" name="contact_method" value="sms" class="text-brand-600 focus:ring-brand-500" />
+                    <span class="text-sm font-medium">SMS / Message</span>
+                  </label>
+                  <label class="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 cursor-pointer hover:border-brand-300 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50 transition">
+                    <input type="radio" name="contact_method" value="email" class="text-brand-600 focus:ring-brand-500" />
+                    <span class="text-sm font-medium">Email</span>
+                  </label>
+                </div>
+              </div>
+
+              <label class="flex items-start gap-3 cursor-pointer p-4 rounded-xl bg-slate-50 border border-slate-200">
+                <input type="checkbox" name="terms" id="fieldTerms" required class="w-4 h-4 mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500" />
+                <span class="text-sm text-slate-600 leading-relaxed">
+                  I agree to the <a href="#" class="text-brand-600 font-medium hover:underline">Terms of Service</a> and confirm this listing is accurate. I understand that false reports may be removed.
+                </span>
+              </label>
+            </div>
+          </section>
+
+          <!-- NAV BUTTONS -->
+          <div class="flex items-center justify-between gap-4 pt-2">
+            <button type="button" id="btnPrev" class="hidden px-6 py-3 rounded-xl text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-100 transition">
+              ← Back
+            </button>
+            <div class="flex-1"></div>
+            <button type="button" id="btnNext" class="px-8 py-3 rounded-xl text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 shadow-md shadow-brand-600/25 transition">
+              Continue →
+            </button>
+            <button type="submit" id="btnSubmit" class="hidden px-8 py-3 rounded-xl text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 shadow-md shadow-brand-600/25 transition">
+              Publish Listing
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- LIVE PREVIEW SIDEBAR -->
+      <aside class="lg:col-span-1">
+        <div class="sticky top-28">
+          <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Live Preview</p>
+
+          <article id="previewCard" class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-card">
+            <div class="relative aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
+              <img id="previewImg" src="" alt="" class="w-full h-full object-cover hidden" />
+              <div id="previewPlaceholder" class="absolute inset-0 flex items-center justify-center text-slate-300">
+                <svg class="w-12 h-12 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+              </div>
+              <span id="previewBadge" class="absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-lost text-white shadow-sm">
+                Lost
+              </span>
+              <span id="previewReward" class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-400 text-amber-900 shadow-sm hidden">
+                Reward $50
+              </span>
+              <span id="previewUrgent" class="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-500 text-white shadow-sm hidden">
+                Urgent
+              </span>
+            </div>
+            <div class="p-4">
+              <div class="flex items-center gap-2 mb-2">
+                <span id="previewCategory" class="text-[11px] font-medium text-brand-600 bg-brand-50 px-2 py-0.5 rounded-md">Category</span>
+                <span class="text-[11px] text-slate-400">Just now</span>
+              </div>
+              <h3 id="previewTitle" class="font-semibold text-slate-800 leading-snug line-clamp-2">
+                Your item title will appear here
+              </h3>
+              <p id="previewDesc" class="mt-1.5 text-sm text-slate-500 line-clamp-2 leading-relaxed">
+                Description preview…
+              </p>
+              <div class="mt-3 flex items-center gap-1.5 text-sm text-slate-500">
+                <svg class="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                <span id="previewLocation" class="truncate">Location</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Tips -->
+          <div class="mt-5 p-4 rounded-xl bg-brand-50 border border-brand-100">
+            <h4 class="text-sm font-semibold text-brand-800 flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Tips for a great listing
+            </h4>
+            <ul class="mt-2 space-y-1.5 text-xs text-brand-700 leading-relaxed">
+              <li>• Add clear, well-lit photos from multiple angles</li>
+              <li>• Include unique identifiers (scratches, stickers, serial numbers)</li>
+              <li>• Never share sensitive info like full ID numbers publicly</li>
+              <li>• Meet in a safe public place when returning items</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <!-- SUCCESS MODAL -->
+  <div id="successModal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center">
+      <div class="w-16 h-16 bg-found-light rounded-full flex items-center justify-center mx-auto">
+        <svg class="w-8 h-8 text-found" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+      </div>
+      <h3 class="mt-5 text-xl font-bold text-slate-800">Listing published!</h3>
+      <p class="mt-2 text-sm text-slate-500">Your item is now live. We'll notify you when someone responds.</p>
+      <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="index.html" class="px-6 py-2.5 rounded-xl text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 transition">View all listings</a>
+        <button type="button" id="btnPostAnother" class="px-6 py-2.5 rounded-xl text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-50 transition">Post another</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentStep = 1;
+    const totalSteps = 4;
+    let itemType = 'lost';
+    let uploadedPhotos = [];
+
+    const params = new URLSearchParams(location.search);
+    if (params.get('type') === 'found') setType('found');
+
+    // ── Type toggle ──
+    function setType(type) {
+      itemType = type;
+      document.getElementById('itemType').value = type;
+      const btnLost = document.getElementById('btnLost');
+      const btnFound = document.getElementById('btnFound');
+      const rewardSection = document.getElementById('rewardSection');
+      const urgentSection = document.getElementById('urgentSection');
+
+      if (type === 'lost') {
+        btnLost.className = 'type-btn group relative p-6 rounded-2xl border-2 border-lost bg-lost-light text-left transition ring-2 ring-lost ring-offset-2';
+        btnLost.querySelector('.type-check').className = 'absolute top-4 right-4 w-5 h-5 rounded-full bg-lost flex items-center justify-center type-check';
+        btnLost.querySelector('.type-check').innerHTML = '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
+        btnFound.className = 'type-btn group relative p-6 rounded-2xl border-2 border-slate-200 bg-white text-left hover:border-found hover:bg-found-light transition';
+        btnFound.querySelector('.type-check').className = 'absolute top-4 right-4 w-5 h-5 rounded-full border-2 border-slate-300 type-check hidden';
+        rewardSection.classList.remove('hidden');
+        urgentSection.classList.remove('hidden');
+      } else {
+        btnFound.className = 'type-btn group relative p-6 rounded-2xl border-2 border-found bg-found-light text-left transition ring-2 ring-found ring-offset-2';
+        btnFound.querySelector('.type-check').className = 'absolute top-4 right-4 w-5 h-5 rounded-full bg-found flex items-center justify-center type-check';
+        btnFound.querySelector('.type-check').innerHTML = '<svg class="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>';
+        btnLost.className = 'type-btn group relative p-6 rounded-2xl border-2 border-slate-200 bg-white text-left hover:border-lost hover:bg-lost-light transition';
+        btnLost.querySelector('.type-check').className = 'absolute top-4 right-4 w-5 h-5 rounded-full border-2 border-slate-300 type-check hidden';
+        rewardSection.classList.add('hidden');
+        urgentSection.classList.add('hidden');
+      }
+      updatePreview();
+    }
+
+    document.getElementById('btnLost').addEventListener('click', () => setType('lost'));
+    document.getElementById('btnFound').addEventListener('click', () => setType('found'));
+
+    // ── Step navigation ──
+    function showStep(step) {
+      currentStep = step;
+      document.querySelectorAll('.form-step').forEach(s => {
+        s.classList.toggle('hidden', parseInt(s.dataset.step) !== step);
+      });
+
+      document.querySelectorAll('.step-indicator').forEach(ind => {
+        const n = parseInt(ind.dataset.step);
+        const circle = ind.querySelector('.step-circle');
+        const label = ind.querySelector('.step-label');
+        if (n < step) {
+          circle.className = 'w-8 h-8 rounded-full bg-brand-600 text-white text-sm font-bold flex items-center justify-center step-circle';
+          circle.innerHTML = '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>';
+          if (label) { label.className = 'text-sm font-medium text-brand-600 hidden sm:inline step-label'; }
+        } else if (n === step) {
+          circle.className = 'w-8 h-8 rounded-full bg-brand-600 text-white text-sm font-bold flex items-center justify-center step-circle';
+          circle.textContent = n;
+          if (label) { label.className = 'text-sm font-medium text-brand-700 hidden sm:inline step-label'; }
+        } else {
+          circle.className = 'w-8 h-8 rounded-full bg-slate-200 text-slate-500 text-sm font-bold flex items-center justify-center step-circle';
+          circle.textContent = n;
+          if (label) { label.className = 'text-sm font-medium text-slate-400 hidden sm:inline step-label'; }
+        }
+      });
+
+      document.querySelectorAll('.step-line').forEach(line => {
+        const after = parseInt(line.dataset.after);
+        line.classList.toggle('bg-brand-600', after < step);
+        line.classList.toggle('bg-slate-200', after >= step);
+      });
+
+      document.getElementById('btnPrev').classList.toggle('hidden', step === 1);
+      document.getElementById('btnNext').classList.toggle('hidden', step === totalSteps);
+      document.getElementById('btnSubmit').classList.toggle('hidden', step !== totalSteps);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function validateStep(step) {
+      const section = document.querySelector(`.form-step[data-step="${step}"]`);
+      const required = section.querySelectorAll('[required]');
+      for (const el of required) {
+        if (!el.checkValidity()) {
+          el.reportValidity();
+          el.focus();
+          return false;
+        }
+      }
+      return true;
+    }
+
+    document.getElementById('btnNext').addEventListener('click', () => {
+      if (validateStep(currentStep) && currentStep < totalSteps) showStep(currentStep + 1);
+    });
+    document.getElementById('btnPrev').addEventListener('click', () => {
+      if (currentStep > 1) showStep(currentStep - 1);
+    });
+
+    // ── Character counters ──
+    document.getElementById('fieldTitle').addEventListener('input', e => {
+      document.getElementById('titleCount').textContent = e.target.value.length;
+      updatePreview();
+    });
+    document.getElementById('fieldDescription').addEventListener('input', e => {
+      document.getElementById('descCount').textContent = e.target.value.length;
+      updatePreview();
+    });
+
+    // ── Reward toggle ──
+    document.getElementById('offerReward').addEventListener('change', e => {
+      document.getElementById('rewardAmountWrap').classList.toggle('hidden', !e.target.checked);
+      updatePreview();
+    });
+    document.getElementById('fieldReward').addEventListener('input', updatePreview);
+    document.getElementById('fieldUrgent').addEventListener('change', updatePreview);
+
+    // ── Location preview ──
+    ['fieldCity', 'fieldArea'].forEach(id => {
+      document.getElementById(id).addEventListener('input', updatePreview);
+    });
+    document.getElementById('fieldCategory').addEventListener('change', updatePreview);
+
+    // ── Photo upload ──
+    document.getElementById('photoInput').addEventListener('change', handlePhotos);
+    document.getElementById('dropZone').addEventListener('dragover', e => { e.preventDefault(); e.currentTarget.classList.add('border-brand-500', 'bg-brand-50'); });
+    document.getElementById('dropZone').addEventListener('dragleave', e => { e.currentTarget.classList.remove('border-brand-500', 'bg-brand-50'); });
+    document.getElementById('dropZone').addEventListener('drop', e => {
+      e.preventDefault();
+      e.currentTarget.classList.remove('border-brand-500', 'bg-brand-50');
+      handleFiles(e.dataTransfer.files);
+    });
+
+    function handlePhotos(e) { handleFiles(e.target.files); }
+
+    function handleFiles(files) {
+      const remaining = 5 - uploadedPhotos.length;
+      Array.from(files).slice(0, remaining).forEach(file => {
+        if (!file.type.startsWith('image/')) return;
+        const reader = new FileReader();
+        reader.onload = ev => {
+          uploadedPhotos.push(ev.target.result);
+          renderPhotoPreviews();
+          updatePreview();
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function renderPhotoPreviews() {
+      const container = document.getElementById('photoPreview');
+      container.innerHTML = uploadedPhotos.map((src, i) => `
+        <div class="relative aspect-square rounded-xl overflow-hidden border border-slate-200 group">
+          <img src="${src}" class="w-full h-full object-cover" />
+          <button type="button" onclick="removePhoto(${i})" class="absolute top-1 right-1 w-6 h-6 bg-black/60 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition flex items-center justify-center">✕</button>
+        </div>
+      `).join('');
+    }
+
+    window.removePhoto = function(index) {
+      uploadedPhotos.splice(index, 1);
+      renderPhotoPreviews();
+      updatePreview();
+    };
+
+    // ── Live preview ──
+    function updatePreview() {
+      const badge = document.getElementById('previewBadge');
+      if (itemType === 'lost') {
+        badge.className = 'absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-lost text-white shadow-sm';
+        badge.textContent = 'Lost';
+      } else {
+        badge.className = 'absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide bg-found text-white shadow-sm';
+        badge.textContent = 'Found';
+      }
+
+      const title = document.getElementById('fieldTitle').value;
+      document.getElementById('previewTitle').textContent = title || 'Your item title will appear here';
+
+      const desc = document.getElementById('fieldDescription').value;
+      document.getElementById('previewDesc').textContent = desc || 'Description preview…';
+
+      const cat = document.getElementById('fieldCategory').value;
+      document.getElementById('previewCategory').textContent = cat || 'Category';
+
+      const city = document.getElementById('fieldCity').value;
+      const area = document.getElementById('fieldArea').value;
+      document.getElementById('previewLocation').textContent = [area, city].filter(Boolean).join(', ') || 'Location';
+
+      const rewardEl = document.getElementById('previewReward');
+      const urgentEl = document.getElementById('previewUrgent');
+      const offerReward = document.getElementById('offerReward').checked;
+      const rewardAmt = document.getElementById('fieldReward').value;
+      const isUrgent = document.getElementById('fieldUrgent').checked;
+
+      if (itemType === 'lost' && offerReward && rewardAmt) {
+        rewardEl.textContent = `Reward $${rewardAmt}`;
+        rewardEl.classList.remove('hidden');
+        urgentEl.classList.add('hidden');
+      } else if (itemType === 'lost' && isUrgent) {
+        rewardEl.classList.add('hidden');
+        urgentEl.classList.remove('hidden');
+      } else {
+        rewardEl.classList.add('hidden');
+        urgentEl.classList.add('hidden');
+      }
+
+      const previewImg = document.getElementById('previewImg');
+      const placeholder = document.getElementById('previewPlaceholder');
+      if (uploadedPhotos.length) {
+        previewImg.src = uploadedPhotos[0];
+        previewImg.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      } else {
+        previewImg.classList.add('hidden');
+        placeholder.classList.remove('hidden');
+      }
+    }
+
+    // ── Form submit ──
+    document.getElementById('postForm').addEventListener('submit', e => {
+      e.preventDefault();
+      if (!validateStep(4)) return;
+      const modal = document.getElementById('successModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    });
+
+    document.getElementById('btnPostAnother').addEventListener('click', () => {
+      document.getElementById('successModal').classList.add('hidden');
+      document.getElementById('successModal').classList.remove('flex');
+      document.getElementById('postForm').reset();
+      uploadedPhotos = [];
+      renderPhotoPreviews();
+      setType('lost');
+      showStep(1);
+      updatePreview();
+    });
+
+    // Set default date to today
+    document.getElementById('fieldDate').valueAsDate = new Date();
+    showStep(1);
+  </script>
+</body>
+</html>
