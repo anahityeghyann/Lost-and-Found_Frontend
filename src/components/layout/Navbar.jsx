@@ -1,5 +1,6 @@
-import { Link } from 'react-router-dom';
-import { CATEGORIES } from '../../data/listings';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { fetchCategories } from '../../services/categoriesApi';
 
 function SearchIcon() {
   return (
@@ -10,6 +11,58 @@ function SearchIcon() {
 }
 
 export default function Navbar() {
+  const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
+
+  const currentCategory = searchParams.get('category') || ''
+  const currentType = searchParams.get('item_type') || ''
+  const currentSearch = searchParams.get('search') || ''
+
+  const [categories, setCategories] = useState([])
+  const [searchTerm, setSearchTerm] = useState(currentSearch)
+  const [selectedCategory, setSelectedCategory] = useState(currentCategory)
+
+  useEffect(() => {
+    setSearchTerm(currentSearch)
+    setSelectedCategory(currentCategory)
+  }, [currentSearch, currentCategory])
+
+
+  useEffect(() => {
+    async function getCategories() {
+      try {
+        const data = await fetchCategories()
+        setCategories(data)
+      } catch (error) {
+        console.error('Error in Navbar while getting categories:', error);
+      }
+    }
+    getCategories()
+  }, [])
+
+  const createFilterUrl = (typeVal, categoryVal, searchVal) => {
+    const params = new URLSearchParams()
+    if (categoryVal) {
+      params.append('category', categoryVal)
+    }
+    if (typeVal) {
+      params.append('item_type', typeVal)
+    }
+    if (searchVal) {
+      params.append('search', searchVal)
+    }
+
+    const queryString = params.toString()
+    return queryString ? `?${queryString}` : '/'
+  }
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault()
+    const url = createFilterUrl(currentType, selectedCategory, searchTerm.trim())
+    navigate(url)
+  }
+
+
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4">
@@ -27,23 +80,25 @@ export default function Navbar() {
           </Link>
 
           <div className="flex-1 max-w-2xl mx-auto">
-            <div className="flex rounded-xl overflow-hidden border-2 border-brand-500 focus-within:ring-4 focus-within:ring-brand-100 transition">
-              <select className="hidden md:block bg-brand-50 text-brand-700 text-sm font-medium px-3 border-r border-brand-200 outline-none cursor-pointer">
-                <option>All Categories</option>
-                {CATEGORIES.map((cat) => (
-                  <option key={cat}>{cat}</option>
+            <form onSubmit={handleSearchSubmit} className="flex rounded-xl overflow-hidden border-2 border-brand-500 focus-within:ring-4 focus-within:ring-brand-100 transition">
+              <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)} className="hidden md:block bg-brand-50 text-brand-700 text-sm font-medium px-3 border-r border-brand-200 outline-none cursor-pointer">
+                <option value="">All Categories</option>
+                {categories.map((cat) => (
+                  <option key={cat.value} value={cat.value}>{cat.label}</option>
                 ))}
               </select>
               <input
                 type="search"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder="Search lost or found items…"
                 className="flex-1 px-4 py-2.5 text-sm outline-none bg-white placeholder:text-slate-400"
               />
-              <button type="button" className="bg-brand-600 hover:bg-brand-700 text-white px-5 transition flex items-center gap-2 font-medium text-sm">
+              <button type="submit" className="bg-brand-600 hover:bg-brand-700 text-white px-5 transition flex items-center gap-2 font-medium text-sm">
                 <SearchIcon />
                 <span className="hidden sm:inline">Search</span>
               </button>
-            </div>
+            </form>
           </div>
 
           <div className="flex items-center gap-2 shrink-0">
@@ -68,28 +123,50 @@ export default function Navbar() {
         </div>
 
         <nav className="flex items-center gap-1 pb-2 overflow-x-auto scrollbar-hide -mx-1 px-1">
-          <a href="#" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold bg-brand-600 text-white whitespace-nowrap">
+          <Link to="/" className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold  whitespace-nowrap transition ${!currentType && !currentCategory
+            ? 'bg-brand-600 text-white'
+            : 'text-slate-600 hover:bg-slate-100 hover:text-brand-600'
+            }`}>
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
             </svg>
             All Items
-          </a>
-          <a href="#" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-lost hover:bg-lost-light whitespace-nowrap transition">
-            <span className="w-2 h-2 rounded-full bg-lost" />
+          </Link>
+          <Link to={createFilterUrl('lost', currentCategory)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition ${currentType === 'lost'
+            ? 'bg-rose-600 text-white font-semibold'
+            : 'text-slate-600 hover:bg-rose-50 hover:text-rose-600'
+            }`}>
+            <span className={`w-2 h-2 rounded-full ${currentType === 'lost' ? 'bg-white' : 'bg-rose-500'}`} />
             Lost
-          </a>
-          <a href="#" className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-found hover:bg-found-light whitespace-nowrap transition">
-            <span className="w-2 h-2 rounded-full bg-found" />
+          </Link>
+          <Link to={createFilterUrl('found', currentCategory)} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition ${currentType === 'found'
+            ? 'bg-emerald-600 text-white font-semibold'
+            : 'text-slate-600 hover:bg-emerald-50 hover:text-emerald-600'
+            }`}>
+            <span className={`w-2 h-2 rounded-full ${currentType === 'found' ? 'bg-white' : 'bg-emerald-500'}`} />
             Found
-          </a>
+          </Link>
           <span className="w-px h-5 bg-slate-200 mx-1 shrink-0" />
-          {CATEGORIES.map((cat) => (
-            <a key={cat} href="#" className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-brand-600 whitespace-nowrap transition">
-              {cat}
-            </a>
-          ))}
+          {categories.map((cat) => {
+            const isSelected = currentCategory === cat.value
+
+            const targetCategory= isSelected ? '' : cat.value
+            const targetUrl = createFilterUrl(currentType, targetCategory)
+
+            return (
+              <Link to={targetUrl} key={cat.value} className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition
+              ${isSelected
+                ? 'bg-brand-600 text-white font-semibold'
+                : 'text-slate-600 hover: bg-slate-100 hover:text-brand-600' 
+              }`}>
+                {cat.label}
+              </Link>
+            )
+
+          })}
         </nav>
       </div>
     </header>
   );
 }
+

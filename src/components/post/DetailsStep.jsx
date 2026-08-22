@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { CATEGORIES } from '../../data/listings';
+import { useRef, useState, useEffect } from 'react';
+import { fetchCategories } from '../../services/categoriesApi';
 
 const inputClass =
   'w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition';
@@ -7,6 +7,19 @@ const inputClass =
 export default function DetailsStep({ form, itemType, onChange, photos, onPhotosChange, onRemovePhoto }) {
   const fileInputRef = useRef(null);
   const isLost = itemType === 'lost';
+  const [categories, setCategories] = useState([])
+
+  useEffect(() => {
+      async function getCategories() {
+        try{
+          const data = await fetchCategories()
+          setCategories(data)
+        } catch(error){
+          console.error('Error in Navbar while getting categories:', error);         
+        }
+      }
+      getCategories()
+  }, []) 
 
   const handleFiles = (files) => {
     const remaining = 5 - photos.length;
@@ -49,8 +62,8 @@ export default function DetailsStep({ form, itemType, onChange, photos, onPhotos
           </label>
           <select name="category" required value={form.category} onChange={onChange} className={`${inputClass} bg-white cursor-pointer`}>
             <option value="">Select a category</option>
-            {CATEGORIES.map((cat) => (
-              <option key={cat} value={cat}>{cat}</option>
+            {categories.map((cat) => (
+              <option key={cat.value} value={cat.value}>{cat.label}</option>
             ))}
           </select>
         </div>
