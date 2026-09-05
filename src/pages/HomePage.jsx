@@ -1,7 +1,7 @@
 import TopBar from '../components/layout/TopBar';
 import Navbar from '../components/layout/Navbar';
 import Hero from '../components/home/Hero';
-import FiltersBar from '../components/home/FiltersBar';
+
 import ItemGrid from '../components/home/ItemGrid';
 import Footer from '../components/layout/Footer';
 
@@ -11,7 +11,6 @@ export default function HomePage() {
       <TopBar />
       <Navbar />
       <Hero />
-      <FiltersBar />
       <ItemGrid />
       <Footer />
     </div>

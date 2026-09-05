@@ -4,6 +4,7 @@ import PostItemPage from './pages/PostItemPage';
 import SignInPage from './pages/SignInPage';
 import RegisterPage from './pages/RegisterPage';
 import ItemPage from './pages/ItemPage';
+import ProfilePage from './pages/ProfilePage';
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
       <Route path="/signin" element={<SignInPage />} />
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/items/:hash" element={<ItemPage />} />
+      <Route path='/profile' element={<ProfilePage/>} />
     </Routes>
   );
 }

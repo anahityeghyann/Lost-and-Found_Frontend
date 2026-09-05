@@ -1,32 +1,51 @@
-import { useState } from 'react';
+import { use, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../components/auth/AuthLayout';
 import { inputClass, labelClass } from '../components/auth/authStyles';
 import SocialButtons from '../components/auth/SocialButtons';
+import { loginUser } from '../services/authApi';
 
 export default function SignInPage() {
   const navigate = useNavigate();
   const [form, setForm] = useState({ email: '', password: '', remember: false });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('')
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate('/');
-    }, 800);
+    setError('')
+    try {
+      const data = await loginUser(form)
+      if (data.token) {
+        localStorage.setItem('token', data.token)
+      }
+      if (data.user) {
+        localStorage.setItem('user', JSON.stringify(data.user))
+      }
+      navigate('/')
+    }
+    catch (error) {
+      setError(error.message || "Invalid email or password")
+    }
+    finally {
+      setLoading(false)
+    }
+    
   };
 
   return (
     <AuthLayout title="Welcome back" subtitle="Sign in to manage your listings and saved items.">
       <form onSubmit={handleSubmit} className="space-y-5">
+        {error && (
+          <div className='p-3 rounded-xl bg-lost-light border border-red-200 text-sm text-lost font-medium'>{error}</div>
+        )}
         <div>
           <label htmlFor="email" className={labelClass}>Email address</label>
           <input

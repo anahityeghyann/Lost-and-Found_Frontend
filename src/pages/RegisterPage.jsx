@@ -3,6 +3,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from '../components/auth/AuthLayout';
 import { inputClass, labelClass } from '../components/auth/authStyles';
 import SocialButtons from '../components/auth/SocialButtons';
+import { registerUser } from '../services/authApi';
+
+const DEFAULT_AVATAR = "https://cdn-icons-png.flaticon.com/512/8345/8345328.png"
 
 export default function RegisterPage() {
   const navigate = useNavigate();
@@ -12,20 +15,50 @@ export default function RegisterPage() {
     phone: '',
     password: '',
     confirmPassword: '',
+    avatar: null,
     terms: false,
   });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [avatarPreview, setAvatarPreview] = useState(null)
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked, files } = e.target;
+    if(type === 'file'){
+      const file =  files[0]
+      // 1024 * 1024 = 1.048.576  = 1 MB
+      // 5 * 1024 * 1024 = 1.048.576  = 5.242.880 = 5MB
+      if (!file) {
+          setForm((prev) => ({...prev, avatar: null}))
+          setAvatarPreview(null)
+          return
+      }
+
+      if(!file.type.startsWith('image/')){
+        setError("Please upload a vaild image file (PNG, JPG, WEBP).")
+        return
+      }
+
+      if(file.size > 5 * 1024 * 1024){
+        setError("image size must be less than 5MB.")
+        return
+      }
+      setForm((prev) => ({...prev, avatar: file}))
+      setAvatarPreview(URL.createObjectURL(file))
+      if(error) setError('')
+      return
+    }
     setForm((prev) => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
     if (error) setError('');
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!form.terms) {
+      setError("You must agree to the Terms of Service and Privacy Policy.")
+      return
+    }
     if (form.password !== form.confirmPassword) {
       setError('Passwords do not match.');
       return;
@@ -35,10 +68,26 @@ export default function RegisterPage() {
       return;
     }
     setLoading(true);
-    setTimeout(() => {
-      setLoading(false);
-      navigate('/');
-    }, 800);
+    setError('')
+    try {
+      const formData = new FormData()
+      formData.append('email', form.email)
+      formData.append('phone_number', form.number)
+      formData.append('password', form.password)
+      if(form.name){
+        formData.append('username', form.email)
+      }
+      if(form.avatar){
+        formData.append('avatar', form.avatar)
+      }
+      await registerUser(form)
+      navigate('/signin')
+    }
+    catch (err) {
+      setError(err.message || "An unexpected error occurred during registration.")
+    } finally {
+      setLoading(false)
+    }
   };
 
   return (
@@ -49,6 +98,15 @@ export default function RegisterPage() {
             {error}
           </div>
         )}
+        <div>
+          <label htmlFor="avatar" className={labelClass}>Profile picture</label>
+          <div className='flex items-center gap-4 mt-1'>
+            <div className='w-16 h-16 rounded-full overflow-hidden bg-slate-100 border border-slate-200 flex items-center justify-center shrink-0'>
+              <img src={avatarPreview || DEFAULT_AVATAR} onError={(e) => {e.target.onerror = null; e. target.src = DEFAULT_AVATAR}} className='w-full h-full object-cover' alt="" />
+            </div>
+            <input type="file" id='avatar' name='avatar' accept='image/*' onChange={handleChange} className='text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-600 hover:file:bg-brand-100 cursor-pointer'/>
+          </div>
+        </div>
 
         <div>
           <label htmlFor="name" className={labelClass}>Full name <span className="text-lost">*</span></label>

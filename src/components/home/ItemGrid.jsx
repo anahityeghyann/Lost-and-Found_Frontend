@@ -3,6 +3,7 @@ import { fetchItems } from '../../services/itemsApi';
 import { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import PageStatus from '../ui/PageStatus';
+import FiltersBar from './FiltersBar';
 
 
 export default function ItemGrid() {
@@ -43,6 +44,8 @@ export default function ItemGrid() {
   
 
   return (
+    <>
+    <FiltersBar count={items.length}/>
     <main className="max-w-7xl mx-auto px-4 py-6">
       {items.length === 0 ? (
         <div className='text-center py-16 bg-white rounded-2xl border border-slate-200'>
@@ -67,5 +70,6 @@ export default function ItemGrid() {
         )
       }
     </main>
+    </>
   );
 }
