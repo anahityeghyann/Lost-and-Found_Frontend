@@ -9,6 +9,7 @@ import LocationStep from '../components/post/LocationStep';
 import ContactStep from '../components/post/ContactStep';
 import LivePreview from '../components/post/LivePreview';
 import SuccessModal from '../components/post/SuccessModal';
+import { createItem } from '../services/itemsApi';
 
 const TOTAL_STEPS = 4;
 
@@ -79,10 +80,22 @@ export default function PostItemPage() {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (!validateStep(4)) return;
-    setShowSuccess(true);
+    try {
+      const data = await createItem({form, itemType, photos})
+      console.log('Successfully published item: ', data);
+      setShowSuccess(true)
+      
+    } catch(error){
+      if (error.data) {
+        console.error("django validation errors", error.data)
+      }else{
+        console.error('Network error while posting:', error);
+        
+      }
+    }
   };
 
   const handlePostAnother = () => {

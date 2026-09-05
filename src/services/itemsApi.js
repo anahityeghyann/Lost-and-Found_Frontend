@@ -31,3 +31,27 @@ export async function fetchItemByHash(hash) {
     }
     return await response.json()
 }
+
+export async function createItem({form, itemType, photos}){
+    const formData = new FormData()
+    Object.keys(form).forEach((key) => {
+        if(form[key] !== null && form[key] !== undefined){
+            formData.append(key, form[key])
+        }
+    })
+    formData.append("itemType", itemType)
+    photos.forEach((photoFile) => {
+        formData.append("photos", photoFile)
+    })
+
+    const response = await fetch(`${BASE_URL}/items/`, {
+        method: 'POST',
+        body: formData
+    })
+
+    const data = await response.json()
+    if(!response.ok){
+        throw {status: response.status, data}
+    }
+    return data
+}
