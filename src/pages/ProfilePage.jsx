@@ -105,7 +105,7 @@ export default function ProfilePage() {
                   alt="Ani Martirosyan"
                   className="w-20 h-20 rounded-2xl object-cover border-4 border-white shadow-sm"
                 />
-                <button className="absolute bottom-0 right-0 p-1.5 bg-[#5034EE] text-white rounded-xl shadow-md hover:bg-[#4128C4] transition-colors border-2 border-white">
+                <button className="absolute bottom-0 right-0 p-1.5 bg-brand-700 text-white rounded-xl shadow-md hover:bg-brand-800 transition-colors border-2 border-white">
                   <Pencil className="w-3.5 h-3.5" />
                 </button>
               </div>
@@ -118,7 +118,7 @@ export default function ProfilePage() {
               </div>
 
               {/* Member since badge */}
-              <div className="mt-3 mb-6 bg-[#EEECFE] text-[#5034EE] text-xs font-semibold px-3 py-1 rounded-full">
+              <div className="mt-3 mb-6 bg-brand-100/80 text-brand-600 text-xs font-semibold px-3 py-1 rounded-full">
                 Member since Jan 2024
               </div>
 
@@ -133,7 +133,7 @@ export default function ProfilePage() {
                   <div className="text-[11px] font-medium text-slate-400 mt-0.5">Reunited</div>
                 </div>
                 <div>
-                  <div className="text-base font-bold text-[#5034EE]">98%</div>
+                  <div className="text-base font-bold text-brand-600">98%</div>
                   <div className="text-[11px] font-medium text-slate-400 mt-0.5">Karma</div>
                 </div>
               </div>
@@ -141,7 +141,7 @@ export default function ProfilePage() {
 
             {/* Menu Nav */}
             <div className="bg-white rounded-3xl p-3 shadow-sm border border-slate-100 flex flex-col gap-1">
-              <button className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-[#5034EE] text-white font-medium text-sm transition-all shadow-sm">
+              <button className="w-full flex items-center gap-3 px-4 py-3 rounded-2xl bg-brand-600 text-white font-medium text-sm transition-all shadow-sm">
                 <User className="w-4 h-4" />
                 <span>Personal Info</span>
               </button>
@@ -161,7 +161,7 @@ export default function ProfilePage() {
                   <Bell className="w-4 h-4 text-slate-400" />
                   <span>Notifications</span>
                 </div>
-                <span className="bg-[#EEECFE] text-[#5034EE] text-xs font-bold px-2 py-0.5 rounded-full">
+                <span className="bg-brand-100/80 text-brand-600 text-xs font-bold px-2 py-0.5 rounded-full">
                   5
                 </span>
               </button>
@@ -179,7 +179,7 @@ export default function ProfilePage() {
 
             {/* Page Title & Last Updated */}
             <div>
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold text-slate-900 tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
                 Profile Settings
               </h1>
               <p className="text-sm text-slate-400 mt-1">
@@ -207,7 +207,7 @@ export default function ProfilePage() {
                     name="fullName"
                     value={formData.fullName}
                     onChange={handleChange}
-                    className="w-full bg-white border-2 border-[#5034EE] rounded-2xl px-4 py-3 text-sm font-medium text-slate-800 focus:outline-none transition-all shadow-sm"
+                    className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-2xl px-4 py-3 text-sm font-medium text-slate-800 focus:outline-none focus:border-2 focus:border-brand-600 focus:bg-white transition-all"
                   />
                 </div>
 
@@ -221,7 +221,7 @@ export default function ProfilePage() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-2xl px-4 py-3 text-sm font-medium text-slate-800 focus:outline-none focus:border-2 focus:border-[#5034EE] focus:bg-white transition-all"
+                    className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-2xl px-4 py-3 text-sm font-medium text-slate-800 focus:outline-none focus:border-2 focus:border-brand-600 focus:bg-white transition-all"
                   />
                 </div>
 
@@ -235,7 +235,7 @@ export default function ProfilePage() {
                     name="phone"
                     value={formData?.phone_number}
                     onChange={handleChange}
-                    className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-2xl px-4 py-3 text-sm font-medium text-slate-800 focus:outline-none focus:border-2 focus:border-[#5034EE] focus:bg-white transition-all"
+                    className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-2xl px-4 py-3 text-sm font-medium text-slate-800 focus:outline-none focus:border-2 focus:border-brand-600 focus:bg-white transition-all"
                   />
                 </div>
 
@@ -249,14 +249,14 @@ export default function ProfilePage() {
                     name="location"
                     value={formData.location}
                     onChange={handleChange}
-                    className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-2xl px-4 py-3 text-sm font-medium text-slate-800 focus:outline-none focus:border-2 focus:border-[#5034EE] focus:bg-white transition-all"
+                    className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-2xl px-4 py-3 text-sm font-medium text-slate-800 focus:outline-none focus:border-2 focus:border-brand-600 focus:bg-white transition-all"
                   />
                 </div>
               </div>
 
               {/* Action Buttons */}
               <div className="flex items-center gap-4 pt-2">
-                <button className="bg-[#5034EE] hover:bg-[#4128C4] text-white font-semibold text-sm px-6 py-3 rounded-2xl transition-colors shadow-sm">
+                <button className="bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm px-6 py-3 rounded-2xl transition-colors shadow-sm">
                   Save Changes
                 </button>
                 <button className="text-slate-500 hover:text-slate-800 font-semibold text-sm px-4 py-3 bg-transparent transition-colors">
@@ -271,7 +271,7 @@ export default function ProfilePage() {
                 <h3 className="text-sm font-bold text-slate-900">
                   Recent Activity
                 </h3>
-                <a href="#all-activity" className="text-[#5034EE] hover:underline font-medium text-xs">
+                <a href="#all-activity" className="text-brand-600 hover:underline font-medium text-xs">
                   View all —
                 </a>
               </div>

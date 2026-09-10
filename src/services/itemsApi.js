@@ -1,7 +1,7 @@
 const BASE_URL = 'http://127.0.0.1:8000/api'
 
 // async, await
-export async function fetchItems(category = '', itemType = '', search){
+export async function fetchItems(category = '', itemType = '', search) {
     const params = new URLSearchParams()
     if (category) {
         params.append('category', category)
@@ -16,7 +16,7 @@ export async function fetchItems(category = '', itemType = '', search){
     const queryString = params.toString() ? `?${params.toString()}` : ''
 
     const response = await fetch(`${BASE_URL}/items/${queryString}`)
-    if(!response.ok){
+    if (!response.ok) {
         throw new Error('Failed to fetch items from backend.')
     }
 
@@ -26,16 +26,16 @@ export async function fetchItems(category = '', itemType = '', search){
 
 export async function fetchItemByHash(hash) {
     const response = await fetch(`${BASE_URL}/items/${hash}/`)
-    if(!response.ok){
+    if (!response.ok) {
         throw new Error(`Failed to fetch item #${hash}`)
     }
     return await response.json()
 }
 
-export async function createItem({form, itemType, photos}){
+export async function createItem({ form, itemType, photos }) {
     const formData = new FormData()
     Object.keys(form).forEach((key) => {
-        if(form[key] !== null && form[key] !== undefined){
+        if (form[key] !== null && form[key] !== undefined) {
             formData.append(key, form[key])
         }
     })
@@ -44,14 +44,31 @@ export async function createItem({form, itemType, photos}){
         formData.append("photos", photoFile)
     })
 
+    const token = localStorage.getItem("token")
+
+    const headers = {}
+    if (token) {
+        headers["Authorization"] = `Token ${token}`
+    }
+
     const response = await fetch(`${BASE_URL}/items/`, {
         method: 'POST',
+        headers: headers,
         body: formData
     })
 
-    const data = await response.json()
-    if(!response.ok){
-        throw {status: response.status, data}
+    const contentType = response.headers.get("content-type")
+    let data
+    if (contentType && contentType.includes("application/json")) {
+        data = await response.json()
+
+    } else {
+        const text = await response.json()
+        data = { detail: text || "An unexpected error occurred." }
+    }
+
+    if (!response.ok) {
+        throw { status: response.status, data }
     }
     return data
 }
