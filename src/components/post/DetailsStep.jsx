@@ -7,30 +7,29 @@ const inputClass =
 export default function DetailsStep({ form, itemType, onChange, photos, onPhotosChange, onRemovePhoto }) {
   const fileInputRef = useRef(null);
   const isLost = itemType === 'lost';
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([]);
 
   useEffect(() => {
-      async function getCategories() {
-        try{
-          const data = await fetchCategories()
-          setCategories(data)
-        } catch(error){
-          console.error('Error in Navbar while getting categories:', error);         
-        }
+    async function getCategories() {
+      try {
+        const data = await fetchCategories();
+        setCategories(data);
+      } catch (error) {
+        console.error('Error in DetailsStep while getting categories:', error);
       }
-      getCategories()
-  }, []) 
+    }
+    getCategories();
+  }, []);
 
   const handleFiles = (files) => {
     const remaining = 5 - photos.length;
-    Array.from(files)
-      .slice(0, remaining)
-      .forEach((file) => {
-        if (!file.type.startsWith('image/')) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => onPhotosChange((prev) => [...prev, ev.target.result]);
-        reader.readAsDataURL(file);
-      });
+    const validFiles = Array.from(files)
+      .filter((file) => file.type.startsWith('image/'))
+      .slice(0, remaining);
+
+    if (validFiles.length > 0) {
+      onPhotosChange((prev) => [...prev, ...validFiles]);
+    }
   };
 
   return (
@@ -84,6 +83,7 @@ export default function DetailsStep({ form, itemType, onChange, photos, onPhotos
           />
           <p className="mt-1 text-xs text-slate-400">{form.description.length}/1000 characters</p>
         </div>
+        
 
         <div>
           <label className="block text-sm font-semibold text-slate-700 mb-1.5">Photos</label>
@@ -112,20 +112,24 @@ export default function DetailsStep({ form, itemType, onChange, photos, onPhotos
             </p>
             <p className="mt-1 text-xs text-slate-400">Up to 5 images · JPG, PNG · Max 5 MB each</p>
           </div>
+
           {photos.length > 0 && (
             <div className="mt-4 grid grid-cols-3 sm:grid-cols-5 gap-3">
-              {photos.map((src, i) => (
-                <div key={src} className="relative aspect-square rounded-xl overflow-hidden border border-slate-200 group">
-                  <img src={src} alt="" className="w-full h-full object-cover" />
-                  <button
-                    type="button"
-                    onClick={() => onRemovePhoto(i)}
-                    className="absolute top-1 right-1 w-6 h-6 bg-black/60 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
-                  >
-                    ✕
-                  </button>
-                </div>
-              ))}
+              {photos.map((file, i) => {
+                const previewUrl = typeof file === 'string' ? file : URL.createObjectURL(file);
+                return (
+                  <div key={i} className="relative aspect-square rounded-xl overflow-hidden border border-slate-200 group">
+                    <img src={previewUrl} alt="preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => onRemovePhoto(i)}
+                      className="absolute top-1 right-1 w-6 h-6 bg-black/60 text-white rounded-full text-xs opacity-0 group-hover:opacity-100 transition flex items-center justify-center"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                );
+              })}
             </div>
           )}
         </div>
@@ -158,6 +162,7 @@ export default function DetailsStep({ form, itemType, onChange, photos, onPhotos
                 </div>
               )}
             </div>
+            
 
             <label className="flex items-center gap-3 cursor-pointer p-4 rounded-xl border border-slate-200 hover:bg-slate-50 transition">
               <input

@@ -6,6 +6,22 @@ import PageStatus from '../components/ui/PageStatus';
 import { AlertCircle, Heart, MapPin } from 'lucide-react';
 import UserDetails from '../components/ui/UserDetails';
 
+
+
+// format YYYY-MM-DD 2026-12-06 -> June 12, 2026
+const formatDate = (dateString) => {
+  if (!dateString) return ''
+  const date = new Date(dateString)
+  if(isNaN(date.getTime())) return dateString
+  return date.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+
+}
+
+
 export default function ItemPage() {
   const { hash } = useParams();
   const [item, setItem] = useState(null);
@@ -159,7 +175,7 @@ export default function ItemPage() {
                 }
 
                 <span className="ml-auto text-xs text-[#64748b]">
-                  Posted on {item?.date_event}
+                  Posted on {formatDate(item?.date)}
                 </span>
               </div>
             </div>
@@ -175,15 +191,15 @@ export default function ItemPage() {
               </div>
               <div className='flex items-start gap-4 px-5 py-3.5 border-b border-[#e2e8f0]'>
                 <span className='text-[10px] font-bold text-[#64748b] uppercase tracking-widest w-32 shrink-0 pt-0.5'>
-                  Date
+                  {item?.item_type === "lost" ? "Date lost" : 'Date found'}
                 </span>
-                <span className="text-sm text-[#1e293b]">{item?.date_event}</span>
+                <span className="text-sm text-[#1e293b]">{formatDate(item?.date)}</span>
               </div>
               <div className='flex items-start gap-4 px-5 py-3.5 border-b border-[#e2e8f0]'>
                 <span className='text-[10px] font-bold text-[#64748b] uppercase tracking-widest w-32 shrink-0 pt-0.5'>
                   Time
                 </span>
-                <span className="text-sm text-[#1e293b]">{item?.time_event ? item.time_event.slice(0, 5) : ''}</span>
+                <span className="text-sm text-[#1e293b]">{item?.time ? item.time.slice(0, 5) : ''}</span>
               </div>
               <div className="px-5 pt-4 pb-5 border-t border-[#e2e8f0]">
                 <span className="text-[10px] font-bold text-[#64748b] uppercase tracking-widest w-32 shrink-0 pt-0.5">

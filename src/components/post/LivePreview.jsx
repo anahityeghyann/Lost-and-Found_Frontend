@@ -1,7 +1,15 @@
+
+
 export default function LivePreview({ itemType, form, photos }) {
   const location = [form.area, form.city].filter(Boolean).join(', ') || 'Location';
   const showReward = itemType === 'lost' && form.offerReward && form.reward;
   const showUrgent = itemType === 'lost' && form.urgent && !showReward;
+
+  const previewSrc = photos[0] ?
+    typeof photos[0] === 'string' 
+      ? photos[0]
+      : URL.createObjectURL(photos[0])
+    : null
 
   return (
     <aside className="lg:col-span-1">
@@ -10,8 +18,8 @@ export default function LivePreview({ itemType, form, photos }) {
 
         <article className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-card">
           <div className="relative aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
-            {photos[0] ? (
-              <img src={photos[0]} alt="" className="w-full h-full object-cover" />
+            {previewSrc ? (
+              <img src={previewSrc} alt="" className="w-full h-full object-cover" />
             ) : (
               <div className="absolute inset-0 flex items-center justify-center text-slate-300">
                 <svg className="w-12 h-12 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
