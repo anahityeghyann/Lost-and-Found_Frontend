@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import ItemNavbar from '../components/layout/ItemNavbar';
-import { fetchItemByHash } from '../services/itemsApi';
+import { fetchItemByHash, toggleSaveItem } from '../services/itemsApi';
 import PageStatus from '../components/ui/PageStatus';
 import { AlertCircle, Heart, MapPin } from 'lucide-react';
 import UserDetails from '../components/ui/UserDetails';
+
 
 
 
@@ -12,7 +13,7 @@ import UserDetails from '../components/ui/UserDetails';
 const formatDate = (dateString) => {
   if (!dateString) return ''
   const date = new Date(dateString)
-  if(isNaN(date.getTime())) return dateString
+  if (isNaN(date.getTime())) return dateString
   return date.toLocaleDateString('en-US', {
     month: 'long',
     day: 'numeric',
@@ -27,6 +28,7 @@ export default function ItemPage() {
   const [item, setItem] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false)
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -35,9 +37,12 @@ export default function ItemPage() {
     try {
       const data = await fetchItemByHash(hash);
       setItem(data);
+      
+      setSaved(data?.is_saved || false)
       if (data.images && data.images.length > 0) {
         setSelectedImage(data.images[0].image);
       }
+      console.log("Fetched Data:", data)
     } catch (err) {
       setError(err.message);
     } finally {
@@ -48,6 +53,30 @@ export default function ItemPage() {
   useEffect(() => {
     getItemData();
   }, [hash]);
+
+
+  const handleToggleSave = async () => {
+    if (saving) return
+    setSaving(true)
+
+    const previousState = saved
+    setSaved(!previousState)
+
+    try {
+      const result = await toggleSaveItem(hash)
+      if (result && typeof result.is_saved === 'boolean') {
+        setSaved(result.is_saved)
+      }
+    }
+    catch (err) {
+      setSaved(previousState)
+      console.error(err.message);
+
+    } finally {
+      setSaving(false)
+    }
+
+  }
 
   if (loading || error) {
     return <PageStatus loading={loading} error={error} onRetry={getItemData} />;
@@ -143,7 +172,8 @@ export default function ItemPage() {
                   {item?.title}
                 </h1>
                 <button
-                  onClick={() => setSaved(!saved)}
+                  onClick={handleToggleSave}
+                  disabled={saving}
                   className={`shrink-0 w-9 h-9 rounded-full border flex items-center justify-center transition-all ${saved
                     ? 'bg-red-50 border-red-200 text-red-500'
                     : 'bg-white border-[#e2e8f0] text-[#64748b] hover:border-[#0066cc] hover:text-[#0066cc]'

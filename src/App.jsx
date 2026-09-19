@@ -5,6 +5,7 @@ import SignInPage from './pages/SignInPage';
 import RegisterPage from './pages/RegisterPage';
 import ItemPage from './pages/ItemPage';
 import ProfilePage from './pages/ProfilePage';
+import SavedItemsPage from './pages/SavedItemsPage';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
       <Route path="/register" element={<RegisterPage />} />
       <Route path="/items/:hash" element={<ItemPage />} />
       <Route path='/profile' element={<ProfilePage/>} />
+      <Route path='/saved-items' element={<SavedItemsPage/>}/>
     </Routes>
   );
 }

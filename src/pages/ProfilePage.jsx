@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ProfileNavbar from '../components/layout/ProfileNavbar';
 import {
   MapPin,
@@ -13,72 +13,52 @@ import {
   Edit3,
   Trash2
 } from 'lucide-react';
+import { fetchUserItems } from '../services/authApi';
 
 export default function ProfilePage() {
   const savedUser = localStorage.getItem('user');
   const user = savedUser ? JSON.parse(savedUser) : null;
+  const token = localStorage.getItem('token')
   const [formData, setFormData] = useState({
     fullName: user?.full_name || user?.first_name || '',
     email: user?.email || '',
     phone: user?.phone_number || '',
     avatar_url: user?.avatar_url || '',
+    // location: user?.location || '',
   });
+  const [userItems, setUserItems] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const loadItems = async () => {
+      if(!token){
+        setLoading(false)
+        return
+      }
+      try {
+        const data = await fetchUserItems(token)
+        setUserItems(data)
+      }catch(err){
+        console.error('Error fetching user items:', err);
+        
+      }finally{
+        setLoading(false)
+      }
+    }
+    loadItems()
+  }, [token])
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const activities = [
-    {
-      id: 1,
-      title: 'Brown leather messenger bag',
-      date: 'Aug 28, 2026',
-      location: 'Vernissage Market, Yerevan',
-      status: 'Active — Lost',
-      statusType: 'warning',
-      image: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200',
-    },
-    {
-      id: 2,
-      title: 'Black iPhone 15 Pro — cracked corner',
-      date: 'Aug 19, 2026',
-      location: 'Cascade Complex, Yerevan',
-      status: 'Resolved — Reunited',
-      statusType: 'success',
-      image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200',
-    },
-    {
-      id: 3,
-      title: 'Over-ear Sony headphones, white',
-      date: 'Aug 12, 2026',
-      location: 'Republic Square Metro',
-      status: 'Found',
-      statusType: 'info',
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200',
-    },
-    {
-      id: 4,
-      title: 'Passport in burgundy cover',
-      date: 'Jul 30, 2026',
-      location: 'Zvartnots Airport, Gate B',
-      status: 'Resolved — Reunited',
-      statusType: 'success',
-      image: 'https://images.unsplash.com/photo-1544717305-2782549b5136?w=200',
-    },
-  ];
-
-  const getStatusBadge = (status, type) => {
-    switch (type) {
-      case 'warning':
-        return 'bg-amber-50 text-amber-600';
-      case 'success':
-        return 'bg-emerald-50 text-emerald-600';
-      case 'info':
-        return 'bg-sky-50 text-sky-600';
-      default:
-        return 'bg-slate-100 text-slate-600';
+  
+  const getStatusBadge = (status, itemType) => {
+    if(status === 'RESOLVED'){
+      return 'bg-emerald-50 text-emerald-600'
     }
+    return itemType === 'lost' ? 'bg-amber-50 text-amber-600' : 'bg-sky-50 text-sky-600'
   };
 
   return (
@@ -233,7 +213,7 @@ export default function ProfilePage() {
                   <input
                     type="text"
                     name="phone"
-                    value={formData?.phone_number}
+                    value={formData?.phone}
                     onChange={handleChange}
                     className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-2xl px-4 py-3 text-sm font-medium text-slate-800 focus:outline-none focus:border-2 focus:border-brand-600 focus:bg-white transition-all"
                   />
@@ -278,30 +258,32 @@ export default function ProfilePage() {
 
               {/* Activity List */}
               <div className="flex flex-col gap-3">
-                {activities.map((act) => (
+                {userItems.map((item) => (
                   <div
-                    key={act.id}
+                    key={item.id}
                     className="group flex items-center justify-between p-3.5 rounded-2xl bg-slate-50/70 border border-slate-100 hover:border-slate-200 transition-all gap-4"
                   >
                     <div className="flex items-center gap-3.5 min-w-0">
                       <img
-                        src={act.image}
-                        alt={act.title}
+                        src={item.main_image_url}
+                        alt={item.title}
                         className="w-12 h-12 rounded-xl object-cover shrink-0"
                       />
                       <div className="min-w-0">
                         <h4 className="font-semibold text-slate-900 text-sm truncate">
-                          {act.title}
+                          {item.title}
                         </h4>
                         <p className="text-xs text-slate-400 mt-0.5 truncate">
-                          {act.date} • {act.location}
+                          {item.date} • {[item.city, item.locationDetail || item.location_detail].filter(Boolean).join(', ')}
+                          
+                          {/* {`${item.city || ''}${item.locationDetail ? `, ${item.locationDetail}` : ''}`} */}
                         </p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3 shrink-0">
-                      <span className={`text-xs font-semibold px-3 py-1 rounded-full ${getStatusBadge(act.status, act.statusType)}`}>
-                        {act.status}
+                      <span className={`text-xs font-semibold px-3 py-1 rounded-full ${getStatusBadge(item.status, item.statusType)}`}>
+                        {item.status}
                       </span>
                       <div className="hidden group-hover:flex items-center gap-1 text-slate-400">
                         <button className="p-1 hover:text-slate-600"><Edit3 className="w-3.5 h-3.5" /></button>

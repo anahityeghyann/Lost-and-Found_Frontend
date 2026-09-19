@@ -6,6 +6,7 @@ export const registerUser = async (userData) => {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            
         },
         body: JSON.stringify({
             email: userData.email,
@@ -62,6 +63,34 @@ export const loginUser = async (credentials) => {
     }
     return data
 
+}
+
+
+
+export const fetchUserItems = async (token) => {
+    const response = await fetch(`${BASE_URL}/my-items/`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Token ${token}`,
+            'Content-Type' : 'application/json',
+        }
+    })
+    const data = await response.json()
+    if (!response.ok) {
+        let errorMessage = 'Failed to fetch user items.'
+        if(data.detail){
+            errorMessage = data.detail
+        }
+        else if (typeof data === 'object') {
+            const messages = Object.entries(data).map(([key, val]) => {
+                const field = key === 'non_field_errors' ? '' : `${key}: `;
+                return `${field}${Array.isArray(val) ? val.join(' ') : val}`;
+            })
+            errorMessage = messages.join(' | ')
+        }
+        throw new Error(errorMessage)
+    }
+    return data
 }
 // "email: A user with that email already exists. | password: this password is too short"
 

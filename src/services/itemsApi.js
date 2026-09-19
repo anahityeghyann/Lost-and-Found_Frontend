@@ -25,7 +25,15 @@ export async function fetchItems(category = '', itemType = '', search) {
 }
 
 export async function fetchItemByHash(hash) {
-    const response = await fetch(`${BASE_URL}/items/${hash}/`)
+    const token = localStorage.getItem('token')
+    const headers = {}
+    if (token) {
+        headers["Authorization"] = `Token ${token}`
+    }
+    const response = await fetch(`${BASE_URL}/items/${hash}/`, {
+        method: 'GET',
+        headers: headers
+    })
     if (!response.ok) {
         throw new Error(`Failed to fetch item #${hash}`)
     }
@@ -71,4 +79,43 @@ export async function createItem({ form, itemType, photos }) {
         throw { status: response.status, data }
     }
     return data
+}
+
+
+export async function toggleSaveItem(hash) {
+    const token = localStorage.getItem('token')
+    const headers = {}
+    if (token) {
+        headers["Authorization"] = `Token ${token}`
+    }
+
+    const response = await fetch(`${BASE_URL}/items/${hash}/save/`, {
+        method: 'POST',
+        headers: headers,
+    })
+
+    if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.detail || 'Failed to update save status.')
+    }
+    return await response.json()
+}
+
+export async function fetchSavedItems() {
+    const token = localStorage.getItem('token')
+    const headers = {}
+    if (token) {
+        headers["Authorization"] = `Token ${token}`
+    }
+
+    const response = await fetch(`${BASE_URL}/items/saved/`, {
+        method: 'GET',
+        headers: headers,
+    })
+
+     if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.detail || 'Failed to fetch saved items.')
+    }
+    return await response.json()
 }

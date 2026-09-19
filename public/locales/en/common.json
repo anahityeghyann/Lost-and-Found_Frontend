@@ -1,0 +1,39 @@
+{
+  "topbar": {
+    "help_center": "Help Center",
+    "contact_us": "Contact Us",
+    "safety_tips": "Safety Tips",
+    "account": "Account",
+    "logout": "Log out",
+    "signin": "Sign In",
+    "register": "Register"
+  },
+  "navbar": {
+    "all_categories": "All Categories",
+    "search_placeholder": "Search lost or found items…",
+    "search_btn": "Search",
+    "saved": "Saved",
+    "post_item": "Post Item",
+    "all_items": "All Items",
+    "lost": "Lost",
+    "found": "Found"
+  },
+  "hero": {
+    "title_line1": "Reunite people with",
+    "title_line2": "what matters most",
+    "description": "Report lost items, share found belongings, and help your community recover valuables quickly and safely.",
+    "btn_lost": "I Lost Something",
+    "btn_found": "I Found Something",
+    "stat_active": "Active listings",
+    "stat_reunited": "Items reunited",
+    "stat_success": "Success rate"
+  },
+  "categories": {
+    "electronics": "Electronics",
+    "documents": "Documents",
+    "keys": "Keys",
+    "bags": "Bags",
+    "pets": "Pets",
+    "other": "Other"
+  }
+}
