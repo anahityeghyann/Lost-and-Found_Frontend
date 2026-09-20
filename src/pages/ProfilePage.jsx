@@ -13,7 +13,7 @@ import {
   Edit3,
   Trash2
 } from 'lucide-react';
-import { fetchUserItems, updateUserProfile } from '../services/authApi';
+import { fetchUserItems, getImageUrl, updateUserProfile } from '../services/authApi';
 
 export default function ProfilePage() {
   const savedUser = localStorage.getItem('user');
@@ -23,14 +23,14 @@ export default function ProfilePage() {
     fullName: user?.full_name || user?.first_name || '',
     email: user?.email || '',
     phone: user?.phone_number || '',
-    avatar_url: user?.avatar_url || '',
-    // location: user?.location || '',
+    avatar_url: user?.avatar_url || user?.avatar || '',
+    location: user?.location || '',
   });
   const [userItems, setUserItems] = useState([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [avatarFile, setAvatarFile] = useState(null)
-  const [avatarPreview, setAvatarPreview] = useState(user?.avatar_url || '')
+  const [avatarPreview, setAvatarPreview] = useState(getImageUrl(user?.avatar_url || user?.avatar || ''))
 
 
   useEffect(() => {
@@ -57,12 +57,18 @@ export default function ProfilePage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  
+
 
   const handleImageChange = (e) => {
     const file = e.target.files[0]
     if (file) {
       setAvatarFile(file)
-      setAvatarPreview(URL.createObjectURL(file))
+      const previewUrl = URL.createObjectURL(file)
+      setAvatarPreview(previewUrl)
+
+      const updatedUser = {...user, avatar_url: previewUrl}
+      localStorage.setItem('user', JSON.stringify(updatedUser))
     }
   }
 
@@ -76,6 +82,8 @@ export default function ProfilePage() {
         avatarFile
       })
       localStorage.setItem('user', JSON.stringify(response.user))
+      setAvatarPreview(getImageUrl(response.user?.avatar_url || response.user?.avatar || ''))
+      alert('Profile updated successfully!')
     } catch (err) {
       console.error('Error updating profile:', err);
       alert(err.message)
@@ -115,12 +123,17 @@ export default function ProfilePage() {
 
               {/* Avatar + Edit Badge */}
               <div className="relative -mt-10 mb-3">
-                <img
-                  src={avatarPreview}
-                  alt="Ani Martirosyan"
-                  className="w-20 h-20 rounded-full object-cover"
-                />
+                {avatarPreview ? (
+                  <img
+                    src={avatarPreview}
+                    alt={user?.full_name}
+                    className="w-20 h-20 rounded-full object-cover"
+                  />
 
+
+                ) : (
+                  <div className="w-20 h-20 rounded-full bg-brand-100">barev</div>
+                )}
                 <label className="absolute bottom-0 right-0 p-1.5 bg-brand-700 text-white rounded-xl shadow-md hover:bg-brand-800 transition-colors border-2 border-white">
                   <Pencil className="w-3.5 h-3.5" />
                   <input className='hidden' accept='image/*' onChange={handleImageChange} type="file" />
