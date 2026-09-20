@@ -35,5 +35,23 @@
     "bags": "Сумки",
     "pets": "Животные",
     "other": "Другое"
+  },
+  "footer": {
+    "tagline": "Помогаем людям находить потерянные вещи с 2024 года.",
+    "browse": "Поиск",
+    "lost_items": "Потерянные вещи",
+    "found_items": "Найденные вещи",
+    "categories": "Категории",
+    "near_me": "Рядом со мной",
+    "support": "Поддержка",
+    "help_center": "Центр помощи",
+    "safety_guidelines": "Правила безопасности",
+    "report_abuse": "Пожаловаться",
+    "contact_us": "Связаться с нами",
+    "legal": "Правовая информация",
+    "terms_of_service": "Условия использования",
+    "privacy_policy": "Политика конфиденциальности",
+    "cookie_policy": "Политика использования cookie",
+    "rights_reserved": "FindIt — Портал Lost & Found. Все права защищены."
   }
 }

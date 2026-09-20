@@ -1,4 +1,7 @@
+import { useTranslation } from "react-i18next";
+
 export default function Footer() {
+  const { t } = useTranslation('common');
   return (
     <footer className="bg-slate-900 text-slate-400 mt-12">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -11,38 +14,38 @@ export default function Footer() {
             </div>
             <span className="text-lg font-bold text-white">FindIt</span>
           </div>
-          <p className="text-sm leading-relaxed">Helping communities reunite people with their lost belongings since 2024.</p>
+          <p className="text-sm leading-relaxed">{t('footer.tagline')}</p>
         </div>
         <div>
-          <h4 className="text-white font-semibold text-sm mb-3">Browse</h4>
+          <h4 className="text-white font-semibold text-sm mb-3">{t('footer.browse')}</h4>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-white transition">Lost Items</a></li>
-            <li><a href="#" className="hover:text-white transition">Found Items</a></li>
-            <li><a href="#" className="hover:text-white transition">Categories</a></li>
-            <li><a href="#" className="hover:text-white transition">Near Me</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.lost_items')}</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.found_items')}</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.categories')}</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.near_me')}</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="text-white font-semibold text-sm mb-3">Support</h4>
+          <h4 className="text-white font-semibold text-sm mb-3">{t('footer.support')}</h4>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-white transition">Help Center</a></li>
-            <li><a href="#" className="hover:text-white transition">Safety Guidelines</a></li>
-            <li><a href="#" className="hover:text-white transition">Report Abuse</a></li>
-            <li><a href="#" className="hover:text-white transition">Contact Us</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.help_center')}</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.safety_guidelies')}</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.report_abuse')}</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.contact_us')}</a></li>
           </ul>
         </div>
         <div>
-          <h4 className="text-white font-semibold text-sm mb-3">Legal</h4>
+          <h4 className="text-white font-semibold text-sm mb-3">{t('footer.legal')}</h4>
           <ul className="space-y-2 text-sm">
-            <li><a href="#" className="hover:text-white transition">Terms of Service</a></li>
-            <li><a href="#" className="hover:text-white transition">Privacy Policy</a></li>
-            <li><a href="#" className="hover:text-white transition">Cookie Policy</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.terms_of_service')}</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.privacy_policy')}</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.cookie_policy')}</a></li>
           </ul>
         </div>
       </div>
       <div className="border-t border-slate-800">
         <div className="max-w-7xl mx-auto px-4 py-4 text-center text-xs">
-          &copy; 2026 FindIt — Lost & Found Portal. All rights reserved.
+          &copy; {t('footer.rights_reserved')}
         </div>
       </div>
     </footer>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { fetchSavedItems } from '../services/itemsApi'
+import { Link } from 'react-router-dom';
 
 const SavedItemsPage = () => {
   const [loading, setLoading] = useState(true);
@@ -41,6 +42,8 @@ const SavedItemsPage = () => {
   }
 
   return (
+    <>
+    <Link className='text-slate-600 font-bold text-xl' to="/">Back</Link>
     <div className="max-w-6xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">
         Saved Items ({savedItems.length})
@@ -106,6 +109,7 @@ const SavedItemsPage = () => {
         </div>
       )}
     </div>
+    </>
   )
 }
 

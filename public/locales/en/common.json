@@ -35,5 +35,23 @@
     "bags": "Bags",
     "pets": "Pets",
     "other": "Other"
+  },
+   "footer": {
+    "tagline": "Helping communities reunite people with their lost belongings since 2024.",
+    "browse": "Browse",
+    "lost_items": "Lost Items",
+    "found_items": "Found Items",
+    "categories": "Categories",
+    "near_me": "Near Me",
+    "support": "Support",
+    "help_center": "Help Center",
+    "safety_guidelines": "Safety Guidelines",
+    "report_abuse": "Report Abuse",
+    "contact_us": "Contact Us",
+    "legal": "Legal",
+    "terms_of_service": "Terms of Service",
+    "privacy_policy": "Privacy Policy",
+    "cookie_policy": "Cookie Policy",
+    "rights_reserved": "FindIt — Lost & Found Portal. All rights reserved."
   }
 }

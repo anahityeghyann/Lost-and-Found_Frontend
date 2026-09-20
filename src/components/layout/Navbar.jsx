@@ -155,18 +155,23 @@ export default function Navbar() {
             {t('navbar.found')}
           </Link>
           <span className="w-px h-5 bg-slate-200 mx-1 shrink-0" />
+          
           {categories.map((cat) => {
             const isSelected = currentCategory === cat.value;
             const targetCategory = isSelected ? '' : cat.value;
             const targetUrl = createFilterUrl(currentType, targetCategory);
 
             return (
-              <Link to={targetUrl} key={cat.value} className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition
-              ${isSelected
-                  ? 'bg-brand-600 text-white font-semibold'
-                  : 'text-slate-600 hover:bg-slate-100 hover:text-brand-600'
-                }`}>
-                {cat.label}
+              <Link
+                to={targetUrl}
+                key={cat.value}
+                className={`px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition
+                    ${isSelected
+                    ? 'bg-brand-600 text-white font-semibold'
+                    : 'text-slate-600 hover:bg-slate-100 hover:text-brand-600'
+                  }`}
+              >
+                {t(`categories.${cat.value.toLowerCase()}`, { defaultValue: cat.label })}
               </Link>
             );
           })}

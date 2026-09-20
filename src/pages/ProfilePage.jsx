@@ -13,7 +13,7 @@ import {
   Edit3,
   Trash2
 } from 'lucide-react';
-import { fetchUserItems } from '../services/authApi';
+import { fetchUserItems, updateUserProfile } from '../services/authApi';
 
 export default function ProfilePage() {
   const savedUser = localStorage.getItem('user');
@@ -28,20 +28,24 @@ export default function ProfilePage() {
   });
   const [userItems, setUserItems] = useState([])
   const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [avatarFile, setAvatarFile] = useState(null)
+  const [avatarPreview, setAvatarPreview] = useState(user?.avatar_url || '')
+
 
   useEffect(() => {
     const loadItems = async () => {
-      if(!token){
+      if (!token) {
         setLoading(false)
         return
       }
       try {
         const data = await fetchUserItems(token)
         setUserItems(data)
-      }catch(err){
+      } catch (err) {
         console.error('Error fetching user items:', err);
-        
-      }finally{
+
+      } finally {
         setLoading(false)
       }
     }
@@ -53,9 +57,40 @@ export default function ProfilePage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0]
+    if (file) {
+      setAvatarFile(file)
+      setAvatarPreview(URL.createObjectURL(file))
+    }
+  }
+
+
+  const handleSave = async () => {
+    if (!token) return
+    setSaving(true)
+    try {
+      const response = await updateUserProfile(token, {
+        ...formData,
+        avatarFile
+      })
+      localStorage.setItem('user', JSON.stringify(response.user))
+    } catch (err) {
+      console.error('Error updating profile:', err);
+      alert(err.message)
+
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  // const handleDiscard = () => {
+
+  // }
+
   const getStatusBadge = (status, itemType) => {
-    if(status === 'RESOLVED'){
+    if (status === 'RESOLVED') {
       return 'bg-emerald-50 text-emerald-600'
     }
     return itemType === 'lost' ? 'bg-amber-50 text-amber-600' : 'bg-sky-50 text-sky-600'
@@ -64,7 +99,7 @@ export default function ProfilePage() {
   return (
     <div className="min-h-screen bg-[#F8FAFC]">
       {/* Top Navbar */}
-      <ProfileNavbar/>
+      <ProfileNavbar />
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -81,13 +116,15 @@ export default function ProfilePage() {
               {/* Avatar + Edit Badge */}
               <div className="relative -mt-10 mb-3">
                 <img
-                  src={user?.avatar_url}
+                  src={avatarPreview}
                   alt="Ani Martirosyan"
-                  className="w-20 h-20 rounded-2xl object-cover border-4 border-white shadow-sm"
+                  className="w-20 h-20 rounded-full object-cover"
                 />
-                <button className="absolute bottom-0 right-0 p-1.5 bg-brand-700 text-white rounded-xl shadow-md hover:bg-brand-800 transition-colors border-2 border-white">
+
+                <label className="absolute bottom-0 right-0 p-1.5 bg-brand-700 text-white rounded-xl shadow-md hover:bg-brand-800 transition-colors border-2 border-white">
                   <Pencil className="w-3.5 h-3.5" />
-                </button>
+                  <input className='hidden' accept='image/*' onChange={handleImageChange} type="file" />
+                </label>
               </div>
 
               <h2 className="text-lg font-bold text-slate-900">{user?.full_name}</h2>
@@ -205,7 +242,7 @@ export default function ProfilePage() {
                   />
                 </div>
 
-                
+
                 <div>
                   <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-2">
                     PHONE NUMBER
@@ -236,8 +273,12 @@ export default function ProfilePage() {
 
               {/* Action Buttons */}
               <div className="flex items-center gap-4 pt-2">
-                <button className="bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm px-6 py-3 rounded-2xl transition-colors shadow-sm">
-                  Save Changes
+                <button
+                  onClick={handleSave}
+                  disabled={saving}
+                  className="bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm px-6 py-3 rounded-2xl transition-colors shadow-sm disabled:opacity-50"
+                >
+                  {saving ? 'Saving...' : 'Save Changes'}
                 </button>
                 <button className="text-slate-500 hover:text-slate-800 font-semibold text-sm px-4 py-3 bg-transparent transition-colors">
                   Discard
@@ -275,7 +316,7 @@ export default function ProfilePage() {
                         </h4>
                         <p className="text-xs text-slate-400 mt-0.5 truncate">
                           {item.date} • {[item.city, item.locationDetail || item.location_detail].filter(Boolean).join(', ')}
-                          
+
                           {/* {`${item.city || ''}${item.locationDetail ? `, ${item.locationDetail}` : ''}`} */}
                         </p>
                       </div>
