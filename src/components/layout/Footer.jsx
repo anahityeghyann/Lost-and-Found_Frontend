@@ -2,6 +2,7 @@ import { useTranslation } from "react-i18next";
 
 export default function Footer() {
   const { t } = useTranslation('common');
+
   return (
     <footer className="bg-slate-900 text-slate-400 mt-12">
       <div className="max-w-7xl mx-auto px-4 py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -29,7 +30,7 @@ export default function Footer() {
           <h4 className="text-white font-semibold text-sm mb-3">{t('footer.support')}</h4>
           <ul className="space-y-2 text-sm">
             <li><a href="#" className="hover:text-white transition">{t('footer.help_center')}</a></li>
-            <li><a href="#" className="hover:text-white transition">{t('footer.safety_guidelies')}</a></li>
+            <li><a href="#" className="hover:text-white transition">{t('footer.safety_guidelines')}</a></li>
             <li><a href="#" className="hover:text-white transition">{t('footer.report_abuse')}</a></li>
             <li><a href="#" className="hover:text-white transition">{t('footer.contact_us')}</a></li>
           </ul>

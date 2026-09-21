@@ -16,15 +16,13 @@ export default function PostNavbar() {
             <span className="block text-[10px] font-medium text-slate-400 -mt-0.5 tracking-widest uppercase">Lost & Found</span>
           </div>
         </Link>
-
-        <div className="flex items-center gap-2 text-sm text-slate-500">
+        {/* <div className="flex items-center gap-2 text-sm text-slate-500">
           <Link to="/" className="hover:text-brand-600 transition">Home</Link>
           <svg className="w-4 h-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
           </svg>
           <span className="font-medium text-slate-800">Post Item</span>
-        </div>
-
+        </div> */}
         <Link to="/" className="text-sm font-medium text-slate-600 hover:text-brand-600 transition shrink-0">
           Cancel
         </Link>

@@ -57,19 +57,27 @@ export default function ProfilePage() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  
 
 
-  const handleImageChange = (e) => {
+
+  const handleImageChange = async (e) => {
     const file = e.target.files[0]
-    if (file) {
-      setAvatarFile(file)
-      const previewUrl = URL.createObjectURL(file)
-      setAvatarPreview(previewUrl)
+    if (!file || !token) return
 
-      const updatedUser = {...user, avatar_url: previewUrl}
-      localStorage.setItem('user', JSON.stringify(updatedUser))
+    const previewUrl = URL.createObjectURL(file)
+    setAvatarPreview(previewUrl)
+    setAvatarFile(file)
+    try {
+      const response = await updateUserProfile(token, {
+        avatarFile: file
+      })
+      localStorage.setItem('user', JSON.stringify(response.user))
+      setAvatarPreview(getImageUrl(response.user?.avatar_url || response.user?.avatar || ''))
+    } catch (err) {
+      console.error('Error auto-updating avatar', err);
+
     }
+
   }
 
 
@@ -84,6 +92,7 @@ export default function ProfilePage() {
       localStorage.setItem('user', JSON.stringify(response.user))
       setAvatarPreview(getImageUrl(response.user?.avatar_url || response.user?.avatar || ''))
       alert('Profile updated successfully!')
+      window.location.reload()
     } catch (err) {
       console.error('Error updating profile:', err);
       alert(err.message)
@@ -93,9 +102,18 @@ export default function ProfilePage() {
     }
   }
 
-  // const handleDiscard = () => {
-
-  // }
+  const handleDiscard = () => {
+    setFormData({
+      fullName: user?.full_name || user?.first_name || '',
+      email: user?.email || '',
+      phone: user?.phone_number || '',
+      avatar_url: user?.avatar_url || user?.avatar || '',
+      location: user?.location || '',
+    })
+    setAvatarPreview(getImageUrl(user?.avatar_url || user?.avatar || ''))
+    setAvatarFile(null)
+  }
+  
 
   const getStatusBadge = (status, itemType) => {
     if (status === 'RESOLVED') {
@@ -277,7 +295,7 @@ export default function ProfilePage() {
                   <input
                     type="text"
                     name="location"
-                    value={formData.location}
+                    value={formData?.location}
                     onChange={handleChange}
                     className="w-full bg-[#F8FAFC] border border-slate-200/80 rounded-2xl px-4 py-3 text-sm font-medium text-slate-800 focus:outline-none focus:border-2 focus:border-brand-600 focus:bg-white transition-all"
                   />
@@ -293,7 +311,7 @@ export default function ProfilePage() {
                 >
                   {saving ? 'Saving...' : 'Save Changes'}
                 </button>
-                <button className="text-slate-500 hover:text-slate-800 font-semibold text-sm px-4 py-3 bg-transparent transition-colors">
+                <button onClick={handleDiscard} className="text-slate-500 hover:text-slate-800 font-semibold text-sm px-4 py-3 bg-transparent transition-colors">
                   Discard
                 </button>
               </div>

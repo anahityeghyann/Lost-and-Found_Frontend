@@ -100,7 +100,9 @@ export const updateUserProfile = async (token, formData) => {
     const data = new FormData()
     // email, phone, avatarFile
     if (formData.fullName) data.append('fullName', formData.fullName)
+    if (formData.email) data.append('email', formData.email)
     if (formData.phone) data.append('phone_number', formData.phone)
+    if (formData.location) data.append('location', formData.location)
     if (formData.avatarFile) data.append('avatar', formData.avatarFile)
 
     const response = await fetch(`${BASE_URL}/profile/update/`,

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { fetchSavedItems } from '../services/itemsApi'
 import { Link } from 'react-router-dom';
+import TopBar from '../components/layout/TopBar'
+import SavedItemsNavbar from '../components/layout/SavedItemsNavbar'
 
 const SavedItemsPage = () => {
   const [loading, setLoading] = useState(true);
@@ -43,12 +45,10 @@ const SavedItemsPage = () => {
 
   return (
     <>
-    <Link className='text-slate-600 font-bold text-xl' to="/">Back</Link>
+    <TopBar/>
+    <SavedItemsNavbar/>
+    {/* <Link className='text-slate-600 font-bold text-xl' to="/">Back</Link> */}
     <div className="max-w-6xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">
-        Saved Items ({savedItems.length})
-      </h1>
-
       {savedItems.length === 0 ? (
         <div className="text-center py-12 bg-gray-50 rounded-xl border border-dashed border-gray-300">
           <p className="text-gray-500 text-lg">You have no saved items yet.</p>
