@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // 1. Ներմուծում ենք hook-ը
 
 export default function AuthLayout({ children, title, subtitle }) {
+  const { t } = useTranslation('common'); // 2. Օգտագործում ենք t ֆունկցիան
+
+  const stats = [
+    { stat: '12,480+', labelKey: 'auth.branding.active_listings' },
+    { stat: '8,920', labelKey: 'auth.branding.items_reunited' },
+    { stat: '94%', labelKey: 'auth.branding.success_rate' },
+  ];
+
   return (
     <div className="min-h-screen flex bg-slate-50">
       {/* Form side */}
@@ -15,7 +24,7 @@ export default function AuthLayout({ children, title, subtitle }) {
             <span className="text-lg font-extrabold text-brand-700">FindIt</span>
           </Link>
           <Link to="/" className="text-sm text-slate-500 hover:text-brand-600 transition">
-            ← Back to home
+            ← {t('auth.back_to_home')}
           </Link>
         </div>
 
@@ -36,28 +45,24 @@ export default function AuthLayout({ children, title, subtitle }) {
         </div>
         <div className="relative flex flex-col justify-center px-12 xl:px-16">
           <h2 className="text-3xl xl:text-4xl font-extrabold leading-tight">
-            Your community&apos;s<br />lost & found hub
+            {t('auth.branding.title_line1')}<br />{t('auth.branding.title_line2')}
           </h2>
           <p className="mt-4 text-brand-100 text-lg leading-relaxed max-w-md">
-            Join thousands of people helping reunite lost items with their owners every day.
+            {t('auth.branding.description')}
           </p>
           <div className="mt-10 space-y-5">
-            {[
-              { stat: '12,480+', label: 'Active listings' },
-              { stat: '8,920', label: 'Items reunited' },
-              { stat: '94%', label: 'Success rate' },
-            ].map(({ stat, label }) => (
-              <div key={label} className="flex items-center gap-4">
+            {stats.map(({ stat, labelKey }) => (
+              <div key={labelKey} className="flex items-center gap-4">
                 <span className="text-2xl font-extrabold w-24">{stat}</span>
-                <span className="text-brand-200">{label}</span>
+                <span className="text-brand-200">{t(labelKey)}</span>
               </div>
             ))}
           </div>
           <div className="mt-12 p-5 rounded-2xl bg-white/10 backdrop-blur border border-white/10">
             <p className="text-sm text-brand-100 leading-relaxed italic">
-              &ldquo;Found my wallet within 2 hours thanks to a kind stranger who posted it here.&rdquo;
+              &ldquo;{t('auth.branding.testimonial_text')}&rdquo;
             </p>
-            <p className="mt-3 text-sm font-semibold">— Anna K., Yerevan</p>
+            <p className="mt-3 text-sm font-semibold">{t('auth.branding.testimonial_author')}</p>
           </div>
         </div>
       </div>

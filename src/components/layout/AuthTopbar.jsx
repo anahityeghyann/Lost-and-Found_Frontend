@@ -20,7 +20,7 @@ export default function TopBar() {
   };
 
   return (
-    <div className="bg-brand-800 text-white text-sm hidden sm:block">
+    <div className="bg-brand-800 text-white text-sm hidden sm:block px-4">
       <div className="max-w-7xl mx-auto px-4 flex items-center justify-between h-9">
         <div className="flex items-center gap-2 text-brand-200 font-medium">
           <span> {t('topbar.welcome_msg', 'FindIt — Your Trusted Lost & Found Community')}</span>
@@ -40,30 +40,6 @@ export default function TopBar() {
               <option value="hy" className="bg-gray-800 text-white">Հայերեն</option>
             </select>
           </div>
-
-          <span className="opacity-30">|</span>
-          {isAuthenticated ? (
-            <>
-              <Link to="/profile" className='flex items-center gap-1.5 opacity-80 hover:opacity-100 transition'>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                </svg>
-                <span>{t('topbar.account')}</span>
-              </Link>
-              <button onClick={handleLogout} type='button' className='flex items-center gap-1.5 opacity-80 hover:opacity-100 transition'>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                </svg>
-                <span>{t('topbar.logout')}</span>
-              </button>
-            </>
-          ) : (
-            <>
-              <Link to="/signin" className="opacity-80 hover:opacity-100 transition">{t('topbar.signin')}</Link>
-              <Link to="/register" className="opacity-80 hover:opacity-100 transition">{t('topbar.register')}</Link>
-            </>
-          )}
-
         </div>
       </div>
     </div>

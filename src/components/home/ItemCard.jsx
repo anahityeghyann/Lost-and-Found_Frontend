@@ -97,11 +97,7 @@ function CardContent({ item, location, dateDisplay, layout }) {
           <span className="truncate">{location}</span>
         </div>
 
-        <span className="text-xs text-slate-400 flex items-center gap-1 shrink-0">
-          <ViewIcon />
-          {item.views ?? 0}{layout === 'list' ? ' views' : ''}
-        </span>
-
+        
         {layout === 'list' && (
           <button type="button" className="ml-auto text-sm font-semibold text-indigo-600 hover:text-indigo-700 transition">
             View Details →

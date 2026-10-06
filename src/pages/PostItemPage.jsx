@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import TopBar from '../components/layout/TopBar';
 import PostNavbar from '../components/layout/PostNavbar';
 import ProgressSteps from '../components/post/ProgressSteps';
@@ -10,6 +11,7 @@ import ContactStep from '../components/post/ContactStep';
 import LivePreview from '../components/post/LivePreview';
 import SuccessModal from '../components/post/SuccessModal';
 import { createItem } from '../services/itemsApi';
+
 
 const TOTAL_STEPS = 4;
 
@@ -33,6 +35,7 @@ const initialForm = () => ({
 });
 
 export default function PostItemPage() {
+  const { t } = useTranslation('common');
   const [searchParams] = useSearchParams();
   const [currentStep, setCurrentStep] = useState(1);
   const [itemType, setItemType] = useState('lost');
@@ -84,16 +87,14 @@ export default function PostItemPage() {
     e.preventDefault();
     if (!validateStep(4)) return;
     try {
-      const data = await createItem({form, itemType, photos})
+      const data = await createItem({form, itemType, photos});
       console.log('Successfully published item: ', data);
-      setShowSuccess(true)
-      
+      setShowSuccess(true);
     } catch(error){
       if (error.data) {
-        console.error("django validation errors", error.data)
-      }else{
+        console.error("django validation errors", error.data);
+      } else {
         console.error('Network error while posting:', error);
-        
       }
     }
   };
@@ -147,7 +148,7 @@ export default function PostItemPage() {
                     onClick={handlePrev}
                     className="px-6 py-3 rounded-xl text-sm font-semibold text-slate-600 border border-slate-200 hover:bg-slate-100 transition"
                   >
-                    ← Back
+                    {t('post_item.back_btn')}
                   </button>
                 ) : (
                   <div />
@@ -159,14 +160,14 @@ export default function PostItemPage() {
                     onClick={handleNext}
                     className="px-8 py-3 rounded-xl text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 shadow-md shadow-brand-600/25 transition"
                   >
-                    Continue →
+                    {t('post_item.continue')}
                   </button>
                 ) : (
                   <button
                     type="submit"
                     className="px-8 py-3 rounded-xl text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 shadow-md shadow-brand-600/25 transition"
                   >
-                    Publish Listing
+                    {t('post_item.publish')}
                   </button>
                 )}
               </div>

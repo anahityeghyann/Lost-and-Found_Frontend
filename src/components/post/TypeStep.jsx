@@ -1,3 +1,6 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 function TypeCheck({ selected, color }) {
   if (selected) {
     return (
@@ -12,10 +15,12 @@ function TypeCheck({ selected, color }) {
 }
 
 export default function TypeStep({ itemType, onTypeChange }) {
+  const { t } = useTranslation('common');
+
   return (
     <section className="bg-white rounded-2xl border border-slate-200 shadow-card p-6 md:p-8">
-      <h2 className="text-xl font-bold text-slate-800">What would you like to post?</h2>
-      <p className="mt-1 text-sm text-slate-500">Choose whether you lost something or found an item.</p>
+      <h2 className="text-xl font-bold text-slate-800">{t('post_item.steps.type.title')}</h2>
+      <p className="mt-1 text-sm text-slate-500">{t('post_item.steps.type.subtitle')}</p>
 
       <div className="mt-6 grid sm:grid-cols-2 gap-4">
         <button
@@ -32,8 +37,8 @@ export default function TypeStep({ itemType, onTypeChange }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
           </div>
-          <h3 className="font-bold text-lg text-slate-800">I Lost Something</h3>
-          <p className="mt-1 text-sm text-slate-500">Report a missing item and ask the community for help finding it.</p>
+          <h3 className="font-bold text-lg text-slate-800">{t('post_item.steps.type.lost_title')}</h3>
+          <p className="mt-1 text-sm text-slate-500">{t('post_item.steps.type.lost_desc')}</p>
           <TypeCheck selected={itemType === 'lost'} color="bg-lost" />
         </button>
 
@@ -51,8 +56,8 @@ export default function TypeStep({ itemType, onTypeChange }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 className="font-bold text-lg text-slate-800">I Found Something</h3>
-          <p className="mt-1 text-sm text-slate-500">Share a found item so the owner can identify and claim it.</p>
+          <h3 className="font-bold text-lg text-slate-800">{t('post_item.steps.type.found_title')}</h3>
+          <p className="mt-1 text-sm text-slate-500">{t('post_item.steps.type.found_desc')}</p>
           <TypeCheck selected={itemType === 'found'} color="bg-found" />
         </button>
       </div>

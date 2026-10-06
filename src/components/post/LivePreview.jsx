@@ -1,20 +1,26 @@
-
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 export default function LivePreview({ itemType, form, photos }) {
-  const location = [form.area, form.city].filter(Boolean).join(', ') || 'Location';
+  const { t } = useTranslation('common');
+
+  const defaultLocation = t('post_item.preview.default_location');
+  const location = [form.area, form.city].filter(Boolean).join(', ') || defaultLocation;
   const showReward = itemType === 'lost' && form.offerReward && form.reward;
   const showUrgent = itemType === 'lost' && form.urgent && !showReward;
 
-  const previewSrc = photos[0] ?
-    typeof photos[0] === 'string' 
+  const previewSrc = photos[0]
+    ? typeof photos[0] === 'string'
       ? photos[0]
       : URL.createObjectURL(photos[0])
-    : null
+    : null;
 
   return (
     <aside className="lg:col-span-1">
       <div className="sticky top-28">
-        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Live Preview</p>
+        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">
+          {t('post_item.preview.header')}
+        </p>
 
         <article className="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-card">
           <div className="relative aspect-[4/3] bg-gradient-to-br from-slate-100 to-slate-200 overflow-hidden">
@@ -28,31 +34,31 @@ export default function LivePreview({ itemType, form, photos }) {
               </div>
             )}
             <span className={`absolute top-3 left-3 inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide text-white shadow-sm ${itemType === 'lost' ? 'bg-lost' : 'bg-found'}`}>
-              {itemType === 'lost' ? 'Lost' : 'Found'}
+              {itemType === 'lost' ? t('post_item.preview.badge_lost') : t('post_item.preview.badge_found')}
             </span>
             {showReward && (
               <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-400 text-amber-900 shadow-sm">
-                Reward ${form.reward}
+                {t('post_item.preview.reward', { amount: form.reward })}
               </span>
             )}
             {showUrgent && (
               <span className="absolute top-3 right-3 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-500 text-white shadow-sm">
-                Urgent
+                {t('post_item.preview.urgent')}
               </span>
             )}
           </div>
           <div className="p-4">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-[11px] font-medium text-brand-600 bg-brand-50 px-2 py-0.5 rounded-md">
-                {form.category || 'Category'}
+                {form.category || t('post_item.preview.default_category')}
               </span>
-              <span className="text-[11px] text-slate-400">Just now</span>
+              <span className="text-[11px] text-slate-400">{t('post_item.preview.just_now')}</span>
             </div>
             <h3 className="font-semibold text-slate-800 leading-snug line-clamp-2">
-              {form.title || 'Your item title will appear here'}
+              {form.title || t('post_item.preview.default_title')}
             </h3>
             <p className="mt-1.5 text-sm text-slate-500 line-clamp-2 leading-relaxed">
-              {form.description || 'Description preview…'}
+              {form.description || t('post_item.preview.default_desc')}
             </p>
             <div className="mt-3 flex items-center gap-1.5 text-sm text-slate-500">
               <svg className="w-4 h-4 text-slate-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -69,13 +75,13 @@ export default function LivePreview({ itemType, form, photos }) {
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            Tips for a great listing
+            {t('post_item.preview.tips_title')}
           </h4>
           <ul className="mt-2 space-y-1.5 text-xs text-brand-700 leading-relaxed">
-            <li>• Add clear, well-lit photos from multiple angles</li>
-            <li>• Include unique identifiers (scratches, stickers, serial numbers)</li>
-            <li>• Never share sensitive info like full ID numbers publicly</li>
-            <li>• Meet in a safe public place when returning items</li>
+            <li>• {t('post_item.preview.tip_1')}</li>
+            <li>• {t('post_item.preview.tip_2')}</li>
+            <li>• {t('post_item.preview.tip_3')}</li>
+            <li>• {t('post_item.preview.tip_4')}</li>
           </ul>
         </div>
       </div>

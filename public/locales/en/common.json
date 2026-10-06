@@ -6,7 +6,8 @@
     "account": "Account",
     "logout": "Log out",
     "signin": "Sign In",
-    "register": "Register"
+    "register": "Register",
+    "welcome_msg": "FindIt — Your Trusted Lost & Found Community"
   },
   "navbar": {
     "all_categories": "All Categories",
@@ -16,7 +17,8 @@
     "post_item": "Post Item",
     "all_items": "All Items",
     "lost": "Lost",
-    "found": "Found"
+    "found": "Found",
+    "search_location": "Search in my location"
   },
   "hero": {
     "title_line1": "Reunite people with",
@@ -53,5 +55,187 @@
     "privacy_policy": "Privacy Policy",
     "cookie_policy": "Cookie Policy",
     "rights_reserved": "FindIt — Lost & Found Portal. All rights reserved."
+  },
+  "profile": {
+    "member_since": "Member since {{month}} {{year}}",
+    "reported": "Reported",
+    "reunited": "Reunited",
+    "karma": "Karma",
+    "personal_info": "Personal Info",
+    "my_listings": "My Listings",
+    "saved_items": "Saved Items",
+    "notifications": "Notifications",
+    "account_settings": "Account Settings",
+    "profile_settings": "Profile Settings",
+    "profile_subtitle": "Manage your personal information and public profile",
+    "last_updated": "Last updated Aug 2026",
+    "full_name": "FULL NAME",
+    "email_address": "EMAIL ADDRESS",
+    "phone_number": "PHONE NUMBER",
+    "primary_location": "PRIMARY LOCATION",
+    "save_changes": "Save Changes",
+    "saving": "Saving...",
+    "discard": "Discard",
+    "recent_activity": "Recent Activity",
+    "view_all": "View all —",
+    "updated_success": "Profile updated successfully!"
+  },
+  "months": {
+    "0": "Jan",
+    "1": "Feb",
+    "2": "Mar",
+    "3": "Apr",
+    "4": "May",
+    "5": "Jun",
+    "6": "Jul",
+    "7": "Aug",
+    "8": "Sep",
+    "9": "Oct",
+    "10": "Nov",
+    "11": "Dec"
+  },
+  "post_item": {
+    "back_btn": "← Back",
+    "continue": "Continue →",
+    "publish": "Publish Listing",
+    "steps": {
+      "type": {
+        "title": "What would you like to post?",
+        "subtitle": "Choose whether you lost something or found an item.",
+        "lost_title": "I Lost Something",
+        "lost_desc": "Report a missing item and ask the community for help finding it.",
+        "found_title": "I Found Something",
+        "found_desc": "Share a found item so the owner can identify and claim it."
+      },
+      "details": {
+        "title": "Item details",
+        "subtitle": "Describe the item clearly so others can recognize it.",
+        "field_title": "Title",
+        "placeholder_title": "e.g. Lost iPhone 15 Pro — Space Black with blue case",
+        "characters": "characters",
+        "category": "Category",
+        "select_category": "Select a category",
+        "description": "Description",
+        "placeholder_desc": "Include distinctive features: color, brand, marks, contents, where you last saw it…",
+        "photos": "Photos",
+        "drag_drop": "Drag & drop photos here, or",
+        "browse": "browse",
+        "photos_limit": "Up to 5 images · JPG, PNG · Max 5 MB each",
+        "offer_reward": "Offer a reward for finding this item",
+        "mark_urgent": "Mark as urgent",
+        "urgent_desc": "For time-sensitive items like pets, medication, or passports"
+      },
+      "location": {
+        "title": "Where & when?",
+        "subtitle": "Help people narrow down the search area.",
+        "city": "City",
+        "city_placeholder": "Yerevan",
+        "district": "District / Area",
+        "district_placeholder": "Kentron, Republic Square",
+        "specific_location": "Specific location",
+        "specific_placeholder": "e.g. Near the fountain, Bus stop #12, Metro Barekamutyun",
+        "date": "Date",
+        "approx_time": "Approximate time",
+        "map_pin": "Pin location on map",
+        "map_optional": "Optional — click to drop a pin"
+      },
+      "contact": {
+        "title": "Contact information",
+        "subtitle": "How should people reach you? Your info is shown only after they contact you.",
+        "full_name": "Full name",
+        "name_placeholder": "John Doe",
+        "phone": "Phone",
+        "email": "Email",
+        "pref_method": "Preferred contact method",
+        "method_phone": "Phone call",
+        "method_sms": "SMS / Message",
+        "method_email": "Email",
+        "terms_prefix": "I agree to the",
+        "terms_link": "Terms of Service",
+        "terms_suffix": "and confirm this listing is accurate. I understand that false reports may be removed."
+      }
+    },
+    "preview": {
+      "header": "Live Preview",
+      "badge_lost": "Lost",
+      "badge_found": "Found",
+      "reward": "Reward ${{amount}}",
+      "urgent": "Urgent",
+      "default_category": "Category",
+      "just_now": "Just now",
+      "default_title": "Your item title will appear here",
+      "default_desc": "Description preview…",
+      "default_location": "Location",
+      "tips_title": "Tips for a great listing",
+      "tip_1": "Add clear, well-lit photos from multiple angles",
+      "tip_2": "Include unique identifiers (scratches, stickers, serial numbers)",
+      "tip_3": "Never share sensitive info like full ID numbers publicly",
+      "tip_4": "Meet in a safe public place when returning items"
+    },
+    "steps_bar": {
+      "type": "Type",
+      "details": "Details",
+      "location": "Location",
+      "contact": "Contact"
+    },
+    "success_modal": {
+      "title": "Listing published!",
+      "subtitle": "Your item is now live. We'll notify you when someone responds.",
+      "view_all": "View all listings",
+      "post_another": "Post another"
+    }
+  },
+  "auth": {
+    "register_title": "Create your account",
+    "register_subtitle": "Start posting and helping your community today.",
+    "login_title": "Welcome back",
+    "login_subtitle": "Sign in to manage your listings and saved items.",
+    "profile_picture": "Profile picture",
+    "full_name": "Full name",
+    "email_address": "Email address",
+    "phone_number": "Phone number",
+    "password": "Password",
+    "confirm_password": "Confirm password",
+    "agree_terms": "I agree to the",
+    "terms_of_service": "Terms of Service",
+    "and": "and",
+    "privacy_policy": "Privacy Policy",
+    "create_account": "Create Account",
+    "creating_account": "Creating account…",
+    "already_have_account": "Already have an account?",
+    "sign_in": "Sign in",
+    "signing_in": "Signing in…",
+    "forgot_password": "Forgot password?",
+    "remember_me": "Remember me for 30 days",
+    "dont_have_account": "Don't have an account?",
+    "create_one_free": "Create one for free",
+    "placeholders": {
+      "full_name": "John Doe",
+      "email": "you@email.com",
+      "phone": "+374 00 000 000",
+      "password_min": "At least 8 characters",
+      "confirm_password": "Re-enter your password",
+      "enter_password": "Enter your password"
+    },
+    "back_to_home": "Back to home",
+    "branding": {
+      "title_line1": "Your community's",
+      "title_line2": "lost & found hub",
+      "description": "Join thousands of people helping reunite lost items with their owners every day.",
+      "active_listings": "Active listings",
+      "items_reunited": "Items reunited",
+      "success_rate": "Success rate",
+      "testimonial_text": "Found my wallet within 2 hours thanks to a kind stranger who posted it here.",
+      "testimonial_author": "— Anna K., Yerevan"
+    },
+    "errors": {
+      "invalid_image": "Please upload a valid image file (PNG, JPG, WEBP).",
+      "image_size_limit": "Image size must be less than 5MB.",
+      "terms_required": "You must agree to the Terms of Service and Privacy Policy.",
+      "password_mismatch": "Passwords do not match.",
+      "password_length": "Password must be at least 8 characters.",
+      "register_failed": "An unexpected error occurred during registration.",
+      "invalid_credentials": "Invalid email or password."
+    }
   }
 }

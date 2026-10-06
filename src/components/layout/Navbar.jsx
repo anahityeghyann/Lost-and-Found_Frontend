@@ -11,6 +11,15 @@ function SearchIcon() {
   );
 }
 
+function LocationIcon() {
+  return (
+    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+    </svg>
+  )
+}
+
 export default function Navbar() {
   const { t } = useTranslation('common');
   const [searchParams] = useSearchParams();
@@ -19,6 +28,7 @@ export default function Navbar() {
   const currentCategory = searchParams.get('category') || '';
   const currentType = searchParams.get('item_type') || '';
   const currentSearch = searchParams.get('search') || '';
+  const currentLocation = searchParams.get('location') || ''
 
   const [categories, setCategories] = useState([]);
   const [searchTerm, setSearchTerm] = useState(currentSearch);
@@ -41,11 +51,12 @@ export default function Navbar() {
     getCategories();
   }, []);
 
-  const createFilterUrl = (typeVal, categoryVal, searchVal) => {
+  const createFilterUrl = (typeVal, categoryVal, searchVal, locationVal) => {
     const params = new URLSearchParams();
     if (categoryVal) params.append('category', categoryVal);
     if (typeVal) params.append('item_type', typeVal);
     if (searchVal) params.append('search', searchVal);
+    if (locationVal) params.append('location', locationVal)
 
     const queryString = params.toString();
     return queryString ? `?${queryString}` : '/';
@@ -53,9 +64,39 @@ export default function Navbar() {
 
   const handleSearchSubmit = (e) => {
     e.preventDefault();
-    const url = createFilterUrl(currentType, selectedCategory, searchTerm.trim());
+    const url = createFilterUrl(currentType, selectedCategory, searchTerm.trim(), currentLocation);
     navigate(url);
   };
+
+  const handleLocationSerach = () => {
+    try {
+      const storedUser = localStorage.getItem("user")
+      const user = storedUser ? JSON.parse(storedUser) : null
+      const userLocation = user?.location
+      if (userLocation) {
+        const targetLocation = currentLocation === userLocation ? "" : userLocation
+        const url = createFilterUrl(currentType, currentCategory, currentSearch, targetLocation)
+        navigate(url)
+      } else {
+        console.warn("No location found in user profile.");
+
+      }
+    } catch (err) {
+      console.error("Error reading location from localStorage", err);
+    }
+  }
+
+  const isLocationActive = currentLocation && (() => {
+    try {
+      const storedUser = localStorage.getItem("user")
+      const user = storedUser ? JSON.parse(storedUser) : null
+      return user?.location === currentLocation
+    } catch {
+      return false
+    }
+  })
+
+
 
   return (
     <header className="bg-white border-b border-slate-200 sticky top-0 z-50 shadow-sm">
@@ -154,8 +195,17 @@ export default function Navbar() {
             <span className={`w-2 h-2 rounded-full ${currentType === 'found' ? 'bg-white' : 'bg-emerald-500'}`} />
             {t('navbar.found')}
           </Link>
+          <button type='button' onClick={handleLocationSerach}
+            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium whitespace-nowrap transition 
+          ${isLocationActive ?
+                'bg-brand-600 text-white font-semibold'
+                : 'text-slate-600 hover:bg-brand-50 hover:text-brand-600'
+              }`}>
+            <LocationIcon />
+            {t('navbar.search_location', { defaultValue: 'Search in my location' })}
+          </button>
           <span className="w-px h-5 bg-slate-200 mx-1 shrink-0" />
-          
+
           {categories.map((cat) => {
             const isSelected = currentCategory === cat.value;
             const targetCategory = isSelected ? '' : cat.value;

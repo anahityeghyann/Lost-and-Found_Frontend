@@ -1,16 +1,20 @@
-import { use, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next'; // 1. Ներմուծում ենք hook-ը
 import AuthLayout from '../components/auth/AuthLayout';
 import { inputClass, labelClass } from '../components/auth/authStyles';
 import SocialButtons from '../components/auth/SocialButtons';
 import { loginUser } from '../services/authApi';
+import AuthTopBar from '../components/layout/AuthTopbar'
 
 export default function SignInPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation('common'); // 2. Օգտագործում ենք t ֆունկցիան
+
   const [form, setForm] = useState({ email: '', password: '', remember: false });
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('')
+  const [error, setError] = useState('');
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -20,34 +24,36 @@ export default function SignInPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('')
+    setError('');
     try {
-      const data = await loginUser(form)
+      const data = await loginUser(form);
       if (data.token) {
-        localStorage.setItem('token', data.token)
+        localStorage.setItem('token', data.token);
       }
       if (data.user) {
-        localStorage.setItem('user', JSON.stringify(data.user))
+        localStorage.setItem('user', JSON.stringify(data.user));
       }
-      navigate('/')
+      navigate('/');
+    } catch (error) {
+      setError(error.message || t('auth.errors.invalid_credentials'));
+    } finally {
+      setLoading(false);
     }
-    catch (error) {
-      setError(error.message || "Invalid email or password")
-    }
-    finally {
-      setLoading(false)
-    }
-    
   };
 
   return (
-    <AuthLayout title="Welcome back" subtitle="Sign in to manage your listings and saved items.">
+    <>
+    <AuthTopBar />
+    <AuthLayout 
+      title={t('auth.login_title')} 
+      subtitle={t('auth.login_subtitle')}
+    >
       <form onSubmit={handleSubmit} className="space-y-5">
         {error && (
           <div className='p-3 rounded-xl bg-lost-light border border-red-200 text-sm text-lost font-medium'>{error}</div>
         )}
         <div>
-          <label htmlFor="email" className={labelClass}>Email address</label>
+          <label htmlFor="email" className={labelClass}>{t('auth.email_address')}</label>
           <input
             id="email"
             type="email"
@@ -56,16 +62,16 @@ export default function SignInPage() {
             autoComplete="email"
             value={form.email}
             onChange={handleChange}
-            placeholder="you@email.com"
+            placeholder={t('auth.placeholders.email')}
             className={inputClass}
           />
         </div>
 
         <div>
           <div className="flex items-center justify-between mb-1.5">
-            <label htmlFor="password" className="text-sm font-semibold text-slate-700">Password</label>
+            <label htmlFor="password" className="text-sm font-semibold text-slate-700">{t('auth.password')}</label>
             <a href="#" className="text-xs font-medium text-brand-600 hover:text-brand-700 hover:underline">
-              Forgot password?
+              {t('auth.forgot_password')}
             </a>
           </div>
           <div className="relative">
@@ -77,7 +83,7 @@ export default function SignInPage() {
               autoComplete="current-password"
               value={form.password}
               onChange={handleChange}
-              placeholder="Enter your password"
+              placeholder={t('auth.placeholders.enter_password')}
               className={inputClass}
             />
             <button
@@ -107,7 +113,7 @@ export default function SignInPage() {
             onChange={handleChange}
             className="w-4 h-4 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
           />
-          <span className="text-sm text-slate-600">Remember me for 30 days</span>
+          <span className="text-sm text-slate-600">{t('auth.remember_me')}</span>
         </label>
 
         <button
@@ -115,18 +121,19 @@ export default function SignInPage() {
           disabled={loading}
           className="w-full py-3 rounded-xl text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 shadow-md shadow-brand-600/25 transition disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          {loading ? 'Signing in…' : 'Sign In'}
+          {loading ? t('auth.signing_in') : t('auth.sign_in')}
         </button>
       </form>
 
       <SocialButtons />
 
       <p className="mt-8 text-center text-sm text-slate-500">
-        Don&apos;t have an account?{' '}
+        {t('auth.dont_have_account')}{' '}
         <Link to="/register" className="font-semibold text-brand-600 hover:text-brand-700">
-          Create one for free
+          {t('auth.create_one_free')}
         </Link>
       </p>
     </AuthLayout>
+    </>
   );
 }

@@ -36,6 +36,7 @@ export default function ItemPage() {
     setLoading(true);
     try {
       const data = await fetchItemByHash(hash);
+
       setItem(data);
       
       setSaved(data?.is_saved || false)
@@ -243,7 +244,7 @@ export default function ItemPage() {
 
 
             {/* ՄԵԿ ՄԻԱՍՆԱԿԱՆ ՍՊԻՏԱԿ CARD ALICE-Ի ՀԱՄԱՐ */}
-            <UserDetails />
+            <UserDetails user={item?.user}/>
 
             {/* REPORT THIS LISTING (Card-ից դուրս) */}
             <div className="flex justify-center pt-1">

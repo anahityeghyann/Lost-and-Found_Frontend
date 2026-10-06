@@ -1,7 +1,7 @@
 const BASE_URL = 'http://127.0.0.1:8000/api'
 
 // async, await
-export async function fetchItems(category = '', itemType = '', search) {
+export async function fetchItems(category = '', itemType = '', search = '', location = '') {
     const params = new URLSearchParams()
     if (category) {
         params.append('category', category)
@@ -11,6 +11,9 @@ export async function fetchItems(category = '', itemType = '', search) {
     }
     if (search) {
         params.append('search', search)
+    }
+    if (location) {
+        params.append('location', location)
     }
 
     const queryString = params.toString() ? `?${params.toString()}` : ''
@@ -113,7 +116,7 @@ export async function fetchSavedItems() {
         headers: headers,
     })
 
-     if (!response.ok) {
+    if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
         throw new Error(errorData.detail || 'Failed to fetch saved items.')
     }

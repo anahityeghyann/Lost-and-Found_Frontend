@@ -1,41 +1,75 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+
 const inputClass =
   'w-full px-4 py-3 rounded-xl border border-slate-200 text-sm outline-none focus:border-brand-500 focus:ring-4 focus:ring-brand-100 transition';
 
 export default function ContactStep({ form, onChange }) {
+  const { t } = useTranslation('common');
+
+  const contactMethods = [
+    { value: 'phone', label: t('post_item.steps.contact.method_phone') },
+    { value: 'sms', label: t('post_item.steps.contact.method_sms') },
+    { value: 'email', label: t('post_item.steps.contact.method_email') },
+  ];
+
   return (
     <section className="bg-white rounded-2xl border border-slate-200 shadow-card p-6 md:p-8">
-      <h2 className="text-xl font-bold text-slate-800">Contact information</h2>
-      <p className="mt-1 text-sm text-slate-500">How should people reach you? Your info is shown only after they contact you.</p>
+      <h2 className="text-xl font-bold text-slate-800">{t('post_item.steps.contact.title')}</h2>
+      <p className="mt-1 text-sm text-slate-500">{t('post_item.steps.contact.subtitle')}</p>
 
       <div className="mt-6 space-y-5">
         <div className="grid sm:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-              Full name <span className="text-lost">*</span>
+              {t('post_item.steps.contact.full_name')} <span className="text-lost">*</span>
             </label>
-            <input type="text" name="name" required value={form.name} onChange={onChange} placeholder="John Doe" className={inputClass} />
+            <input
+              type="text"
+              name="name"
+              required
+              value={form.name}
+              onChange={onChange}
+              placeholder={t('post_item.steps.contact.name_placeholder')}
+              className={inputClass}
+            />
           </div>
           <div>
             <label className="block text-sm font-semibold text-slate-700 mb-1.5">
-              Phone <span className="text-lost">*</span>
+              {t('post_item.steps.contact.phone')} <span className="text-lost">*</span>
             </label>
-            <input type="tel" name="phone" required value={form.phone} onChange={onChange} placeholder="+374 00 000 000" className={inputClass} />
+            <input
+              type="tel"
+              name="phone"
+              required
+              value={form.phone}
+              onChange={onChange}
+              placeholder="+374 00 000 000"
+              className={inputClass}
+            />
           </div>
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-1.5">Email</label>
-          <input type="email" name="email" value={form.email} onChange={onChange} placeholder="you@email.com" className={inputClass} />
+          <label className="block text-sm font-semibold text-slate-700 mb-1.5">
+            {t('post_item.steps.contact.email')}
+          </label>
+          <input
+            type="email"
+            name="email"
+            value={form.email}
+            onChange={onChange}
+            placeholder="you@email.com"
+            className={inputClass}
+          />
         </div>
 
         <div>
-          <label className="block text-sm font-semibold text-slate-700 mb-3">Preferred contact method</label>
+          <label className="block text-sm font-semibold text-slate-700 mb-3">
+            {t('post_item.steps.contact.pref_method')}
+          </label>
           <div className="flex flex-wrap gap-3">
-            {[
-              { value: 'phone', label: 'Phone call' },
-              { value: 'sms', label: 'SMS / Message' },
-              { value: 'email', label: 'Email' },
-            ].map(({ value, label }) => (
+            {contactMethods.map(({ value, label }) => (
               <label
                 key={value}
                 className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 cursor-pointer hover:border-brand-300 has-[:checked]:border-brand-500 has-[:checked]:bg-brand-50 transition"
@@ -64,7 +98,11 @@ export default function ContactStep({ form, onChange }) {
             className="w-4 h-4 mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500"
           />
           <span className="text-sm text-slate-600 leading-relaxed">
-            I agree to the <a href="#" className="text-brand-600 font-medium hover:underline">Terms of Service</a> and confirm this listing is accurate. I understand that false reports may be removed.
+            {t('post_item.steps.contact.terms_prefix')}{' '}
+            <a href="#" className="text-brand-600 font-medium hover:underline">
+              {t('post_item.steps.contact.terms_link')}
+            </a>{' '}
+            {t('post_item.steps.contact.terms_suffix')}
           </span>
         </label>
       </div>
